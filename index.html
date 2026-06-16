@@ -49,7 +49,7 @@ label.opt:hover{background:#f9fafb}
 <div class="wrap">
   <section class="hero">
     <h1>🪩 BMC Discovery Quiz 🪩</h1>
-    <p>Learning for the Exam with all Dsicovery Questions. This version keeps the progress of this session. If no questions are displayed or you want to start a new round click on the '🎲 New Random Set' button! '🎯 Toggle Focus Mode' = only the questions answered incorrectly. If you want to delete all your progress '♻️ Reset Progress'. You can decide how many questions you want per round. </p>
+    <p>Learning for the Exam with all Dsicovery Questions. This version keeps the progress of this session. If no questions are displayed or you want to start a new round click on the '🎲 New Random Set' button! '🎯 Toggle Focus Mode' = only the questions answered incorrectly. If you want to delete all your progress '♻️ Reset Progress'.</p>
     <div class="stats">
       <div class="stat"><div class="label">Questions per round</div><div class="value" id="questionsPerRoundValue">25</div></div>
       <div class="stat"><div class="label">Question pool</div><div class="value" id="poolCount"></div></div>
@@ -64,7 +64,6 @@ label.opt:hover{background:#f9fafb}
       <div class="card" style="padding:14px;">
         <strong>Aktionen</strong>
         <div class="toolbar">
-          <button type="button" onclick="newQuiz()">🎲 New Random Set</button>
           <button type="button" class="secondary" onclick="toggleFocus()">🎯 Toggle Focus Mode</button>
           <button type="button" class="secondary" onclick="resetProgress()">♻️ Reset Progress</button>
         </div>
@@ -1871,7 +1870,80 @@ function renderQuiz(questions = activeQuestions) {
 }
 function getSelected(idx, multi){ if(multi) return Array.from(document.querySelectorAll(`input[name="q${idx}[]"]:checked`)).map(el=>Number(el.value)).sort((a,b)=>a-b); const s = document.querySelector(`input[name="q${idx}"]:checked`); return s ? [Number(s.value)] : []; }
 function sameSet(a,b){ if(a.length!==b.length) return false; for(let i=0;i<a.length;i++) if(a[i]!==b[i]) return false; return true; }
-function submitAndScore(){ const mastered=loadMap(STORAGE_KEY), wrong=loadMap(WRONG_KEY); let correctCount=0, wrongCount=0, unanswered=0; const wrongItems = []; activeQuestions.forEach((item, idx) => { const selected = getSelected(idx, item.multi); const correct = [...item.correct].sort((a,b)=>a-b); const fb = document.getElementById(`fb_${idx}`); const selectedText = selected.map(i=>item.options[i]).join('; ') || 'No answer selected'; const correctText = correct.map(i=>item.options[i]).join('; '); const ok = sameSet(selected, correct); if(selected.length===0){ unanswered++; wrong[item.id]=true; delete mastered[item.id]; wrongItems.push(item); fb.className='feedback incorrect'; fb.style.display='block'; fb.innerHTML=`❌ No answer selected.<br><strong>Correct answer:</strong> ${correctText}`; return; } if(ok){ correctCount++; mastered[item.id]=true; delete wrong[item.id]; fb.className='feedback correct'; fb.style.display='block'; fb.innerHTML=`✅ Correct.<br><strong>Answer:</strong> ${correctText}`; } else { wrongCount++; wrong[item.id]=true; delete mastered[item.id]; wrongItems.push(item); fb.className='feedback incorrect'; fb.style.display='block'; fb.innerHTML=`❌ Your answer: ${selectedText}<br><strong>Correct answer:</strong> ${correctText}`; } }); saveMap(STORAGE_KEY, mastered); saveMap(WRONG_KEY, wrong); updateProgress(); const total = activeQuestions.length; const pct = total ? Math.round((correctCount/total)*100) : 0; const rb = document.getElementById('resultBox'); rb.style.display='block'; rb.innerHTML = `<h2 style="margin:0 0 8px;">Session result: ${correctCount} / ${total} (${pct}%)</h2><p><strong>Correct:</strong> ${correctCount}</p><p><strong>Wrong:</strong> ${wrongCount}</p><p><strong>Unanswered:</strong> ${unanswered}</p><p class="small">Der Lernfortschritt wurde aktualisiert. Jetzt werden automatisch nur die falschen Fragen angezeigt.</p>`; rb.scrollIntoView({behavior:'smooth', block:'start'}); if(wrongItems.length){ setTimeout(() => { activeQuestions = wrongItems; renderQuiz(wrongItems); }, 50); } }
+function submitAndScore(){
+  const mastered = loadMap(STORAGE_KEY);
+  const wrong = loadMap(WRONG_KEY);
+
+  let correctCount = 0, wrongCount = 0, unanswered = 0;
+  const wrongItems = [];
+
+  activeQuestions.forEach((item, idx) => {
+    const selected = getSelected(idx, item.multi);
+    const correct = [...item.correct].sort((a,b)=>a-b);
+    const fb = document.getElementById(`fb_${idx}`);
+
+    const correctText = correct.map(i => item.options[i]).join('; ');
+    const selectedText = selected.map(i => item.options[i]).join('; ') || 'No answer selected';
+
+    const ok = sameSet(selected, correct);
+
+    if(selected.length === 0){
+      unanswered++;
+      wrong[item.id] = true;
+      delete mastered[item.id];
+      wrongItems.push({item, selectedText, correctText});
+
+      fb.className='feedback incorrect';
+      fb.style.display='block';
+      fb.innerHTML=`❌ No answer selected.<br><strong>Correct:</strong> ${correctText}`;
+      return;
+    }
+
+    if(ok){
+      correctCount++;
+      mastered[item.id] = true;
+      delete wrong[item.id];
+
+      fb.className='feedback correct';
+      fb.style.display='block';
+      fb.innerHTML=`✅ Correct`;
+    } else {
+      wrongCount++;
+      wrong[item.id] = true;
+      delete mastered[item.id];
+
+      wrongItems.push({item, selectedText, correctText});
+
+      fb.className='feedback incorrect';
+      fb.style.display='block';
+      fb.innerHTML=`❌ Your answer: ${selectedText}<br><strong>Correct:</strong> ${correctText}`;
+    }
+  });
+
+  saveMap(STORAGE_KEY, mastered);
+  saveMap(WRONG_KEY, wrong);
+  updateProgress();
+
+  const total = activeQuestions.length;
+  const pct = total ? Math.round((correctCount/total)*100) : 0;
+
+  // ✅ Ergebnis anzeigen
+  const rb = document.getElementById('resultBox');
+  rb.style.display = 'block';
+  rb.innerHTML = `
+    <h2>Result: ${correctCount} / ${total} (${pct}%)</h2>
+
+    <p><strong>✅ Correct:</strong> ${correctCount}</p>
+    <p><strong>❌ Wrong:</strong> ${wrongCount}</p>
+    <p><strong>⚪ Unanswered:</strong> ${unanswered}</p>
+
+    <p style="margin-top:10px;">
+      ➜ Check the highlighted questions above for details.
+    </p>
+  `;
+
+  rb.scrollIntoView({behavior:'smooth'});
+}
 function showAnswersOnly(){
   activeQuestions.forEach((item, idx) => {
     const fb = document.getElementById(`fb_${idx}`);
