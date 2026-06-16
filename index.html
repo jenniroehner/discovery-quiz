@@ -1,29 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>BMC Discovery Quiz – Ultra Trap</title>
+<title>BMC Discovery Quiz – Pro Version</title>
 <style>
-:root { --bg:#f6f8fb; --card:#fff; --text:#1f2937; --muted:#6b7280; --primary:#2563eb; --primary-dark:#1d4ed8; --ok:#0f9d58; --bad:#d93025; --border:#e5e7eb; --shadow:0 6px 18px rgba(0,0,0,.08); }
-*{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);line-height:1.45} .wrap{max-width:1060px;margin:0 auto;padding:24px}
-.hero,.card{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow)} .hero{padding:22px;margin-bottom:20px}
-.toolbar{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px} button{appearance:none;border:0;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:700;background:var(--primary);color:#fff} button:hover{background:var(--primary-dark)} button.secondary{background:#e5e7eb;color:#111827} button.secondary:hover{background:#d1d5db}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:18px 0} .stat{background:#f9fafb;border:1px solid var(--border);border-radius:12px;padding:12px} .stat .label{color:var(--muted);font-size:.92rem} .stat .value{font-size:1.2rem;font-weight:700;margin-top:4px}
-.progress{margin-top:16px} .progress-track{background:#e5e7eb;height:18px;border-radius:999px;overflow:hidden} .progress-bar{height:18px;width:0%;background:var(--ok);transition:width .35s ease}
-.quiz-card{padding:18px;margin-bottom:16px} .question-header{display:flex;justify-content:space-between;gap:12px;align-items:center} .badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:.82rem;font-weight:700;background:#eef2ff;border:1px solid #c7d2fe;color:#3730a3}
-.options{display:grid;gap:8px;margin-top:12px} label.opt{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--border);border-radius:10px;cursor:pointer;background:#fff} label.opt:hover{background:#f9fafb}
-.feedback{display:none;margin-top:12px;padding:12px;border-radius:10px;border:1px solid var(--border)} .feedback.correct{background:#eaf7ee;color:var(--ok);border-color:#b7e1c4} .feedback.incorrect{background:#fdeeee;color:var(--bad);border-color:#f2b8b5}
-.footer-actions{position:sticky;bottom:0;background:rgba(246,248,251,.95);backdrop-filter:blur(6px);padding:14px 0 8px;margin-top:10px} .result-box{display:none;margin-top:18px;padding:16px;border-radius:12px;border:1px solid var(--border);background:#fff;box-shadow:var(--shadow)} .small{color:var(--muted);font-size:.95rem}
+:root {
+  --bg:#f6f8fb; --card:#fff; --text:#1f2937; --muted:#6b7280; --primary:#2563eb; --primary-dark:#1d4ed8;
+  --ok:#0f9d58; --bad:#d93025; --border:#e5e7eb; --shadow:0 6px 18px rgba(0,0,0,.08);
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);line-height:1.45}
+.wrap{max-width:1180px;margin:0 auto;padding:24px}
+.hero,.card{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow)}
+.hero{padding:22px;margin-bottom:20px}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;align-items:center}
+button, select{appearance:none;border:1px solid var(--border);padding:10px 14px;border-radius:10px;font:inherit}
+button{cursor:pointer;font-weight:700;background:var(--primary);color:#fff;border:0}
+button:hover{background:var(--primary-dark)}
+button.secondary{background:#e5e7eb;color:#111827}
+button.secondary:hover{background:#d1d5db}
+button.ghost{background:#fff;color:#111827;border:1px solid var(--border)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:18px 0}
+.stat{background:#f9fafb;border:1px solid var(--border);border-radius:12px;padding:12px}
+.stat .label{color:var(--muted);font-size:.92rem}
+.stat .value{font-size:1.2rem;font-weight:700;margin-top:4px}
+.progress{margin-top:16px}
+.progress-track{background:#e5e7eb;height:18px;border-radius:999px;overflow:hidden}
+.progress-bar{height:18px;width:0%;background:var(--ok);transition:width .35s ease}
+.quiz-card{padding:18px;margin-bottom:16px}
+.question-header{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:.82rem;font-weight:700;background:#eef2ff;border:1px solid #c7d2fe;color:#3730a3;white-space:nowrap}
+.options{display:grid;gap:8px;margin-top:12px}
+label.opt{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--border);border-radius:10px;cursor:pointer;background:#fff}
+label.opt:hover{background:#f9fafb}
+.feedback{display:none;margin-top:12px;padding:12px;border-radius:10px;border:1px solid var(--border)}
+.feedback.correct{background:#eaf7ee;color:var(--ok);border-color:#b7e1c4}
+.feedback.incorrect{background:#fdeeee;color:var(--bad);border-color:#f2b8b5}
+.footer-actions{position:sticky;bottom:0;background:rgba(246,248,251,.95);backdrop-filter:blur(6px);padding:14px 0 8px;margin-top:10px;z-index:10}
+.result-box{display:none;margin-top:18px;padding:16px;border-radius:12px;border:1px solid var(--border);background:#fff;box-shadow:var(--shadow)}
+.small{color:var(--muted);font-size:.95rem}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.inline-stat{display:inline-flex;gap:8px;align-items:center;padding:8px 10px;background:#f9fafb;border:1px solid var(--border);border-radius:10px}
+.hidden{display:none!important}
 </style>
 </head>
 <body>
 <div class="wrap">
   <section class="hero">
     <h1>🪩 BMC Discovery Quiz 🪩</h1>
-    <p>Learning for the Exam with all Dsicovery Questions. This version keeps the progress of this session. If no questions are displayed click on the '🎲 New Random Set' button!</p>
+    <p>Learning for the Exam with all Dsicovery Questions. This version keeps the progress of this session. If no questions are displayed or you want to start a new round click on the '🎲 New Random Set' button! '🎯 Toggle Focus Mode' = only the questions answered incorrectly. If you want to delete all your progress '♻️ Reset Progress'.</p>
     <div class="stats">
-      <div class="stat"><div class="label">Questions per round</div><div class="value">25</div></div>
+      <div class="stat"><div class="label">Questions per round</div><div class="value" id="questionsPerRoundValue">25</div></div>
       <div class="stat"><div class="label">Question pool</div><div class="value" id="poolCount"></div></div>
       <div class="stat"><div class="label">Current mode</div><div class="value" id="modeText">Normal Mode</div></div>
     </div>
@@ -32,39 +60,1848 @@
       <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
       <p id="progressText" class="small">0% (0/0 mastered)</p>
     </div>
-    <div class="toolbar">
-      <button type="button" onclick="newQuiz()">🎲 New Random Set</button>
-      <button type="button" class="secondary" onclick="toggleFocus()">🎯 Toggle Focus Mode</button>
-      <button type="button" class="secondary" onclick="resetProgress()">♻️ Reset Progress</button>
+    <div class="grid-2">
+      <div class="card" style="padding:14px;">
+        <strong>Aktionen</strong>
+        <div class="toolbar">
+          <button type="button" onclick="newQuiz()">🎲 New Random Set</button>
+          <button type="button" class="secondary" onclick="toggleFocus()">🎯 Toggle Focus Mode</button>
+          <button type="button" class="secondary" onclick="resetProgress()">♻️ Reset Progress</button>
+        </div>
+        <div class="toolbar">
+          <button type="button" class="ghost" onclick="exportProgress()">⬇️ Export progress</button>
+          <button type="button" class="ghost" onclick="document.getElementById('importFile').click()">⬆️ Import progress</button>
+          <input id="importFile" type="file" accept="application/json" class="hidden" />
+        </div>
+        <div class="toolbar">
+          <label class="inline-stat">Round size
+            <select id="roundSizeSelect">
+              <option value="10">10</option>
+              <option value="25" selected>25</option>
+              <option value="50">50</option>
+              <option value="9999">Alle</option>
+            </select>
+          </label>
+        </div>
+      </div>
     </div>
-    <p class="small">Focus Mode = only previously wrong questions. Progress updates only after <strong>Submit &amp; Score</strong>.</p>
   </section>
   <form id="quizForm"></form>
-  <div class="footer-actions"><div class="toolbar"><button type="button" onclick="submitAndScore()">✅ Submit &amp; Score</button><button type="button" class="secondary" onclick="newQuiz()">🔄 New 25 Questions</button></div></div>
+  <div class="footer-actions"><div class="toolbar"><button type="button" onclick="submitAndScore()">✅ Submit &amp; Score</button><button type="button" class="secondary" onclick="newQuiz()">🔄 New round</button><button type="button" class="ghost" id="toggleBtn" onclick="showAnswersOnly()">👀 Show correct answers</button></div></div>
   <div id="resultBox" class="result-box"></div>
 </div>
 <script>
-const QUESTION_COUNT=25;
-const STORAGE_KEY='bmc_ultra_trap_mastered';
-const WRONG_KEY='bmc_ultra_trap_wrong';
-let focusMode=false;
-let activeQuestions=[];
-const questionPool = [{"id": 1, "q": "Regarding Clusters and Consolidation: An Appliance can be a Cluster Coordinator while at the same time being a Consolidator.", "answerText": "True", "options": ["True", "False"], "correct": [0], "multi": false}, {"id": 2, "q": "Regarding Consolidation: An Appliance that is assigned the role of a Consolidator is technically also able to scan its own network.", "answerText": "True", "options": ["True", "False"], "correct": [0], "multi": false}, {"id": 3, "q": "Which is a correct statement about Clusters?", "answerText": "Fault Tolerance in a cluster is an option, not a requirement", "options": ["To prevent data loss", "Fault Tolerance in a cluster is an option, not a requirement", "Fault tolerance must be enabled", "It is recommended to install patterns on both the Scanning and Consolidation appliances"], "correct": [1], "multi": false}, {"id": 4, "q": "Identify the correct statement regarding the discovery of Load Balancers.", "answerText": "Load Balancer information is discovered using SNMP", "options": ["A proprietary Object based datastore", "Load Balancer information is discovered using SNMP", "Unlocker, Discovery, System, Admin, Public", "It is recommended to install patterns on both the Scanning and Consolidation appliances"], "correct": [1], "multi": false}, {"id": 5, "q": "When a Cluster Coordinator fails, the next member in the cluster will become the new Cluster Coordinator.", "answerText": "False", "options": ["False", "True"], "correct": [0], "multi": false}, {"id": 6, "q": "Which are the three types of Scope types?", "answerText": "Default, Named, and Network", "options": ["Network", "Help > Rest API", "Default", "use meaningful TPL variable names", "getDeviceInfo", "Named"], "correct": [2, 5, 0], "multi": true}, {"id": 7, "q": "Which method does PowerShell use by default to connect to a Windows host?", "answerText": "PowerShell API using HTTPS", "options": ["Credential Vault", "PowerShell API using HTTPS", "Windows Management Instrumentation (WMI)", "Port Scanning"], "correct": [1], "multi": false}, {"id": 8, "q": "Which answer accurately lists elements included in the Standard Discovery Section from a Discovery run?", "answerText": "Script, Result, and Access Method", "options": ["Display the source from where an inferred node or attribute was derived", "Script, Result, and Access Method", "A proprietary Object based datastore", "Unlocker, Discovery, System, Admin, Public"], "correct": [1], "multi": false}, {"id": 9, "q": "There are circumstances when Discovery will execute patterns prior to Standard Discovery.", "answerText": "False", "options": ["True", "False"], "correct": [1], "multi": false}, {"id": 10, "q": "Which answer lists the three scripts that must run successfully to infer a Host?", "answerText": "getHostInfo, getMACAddresses, and getDeviceInfo", "options": ["Begin the process with very little seed data", "getMACAddresses", "getHostInfo", "getDeviceInfo", "Help > Rest API", "send interim findings to the application owner without sharing appliance credentials"], "correct": [2, 1, 3], "multi": true}, {"id": 11, "q": "Which is a correct statement regarding using a Consolidation Appliance?", "answerText": "It is recommended to install patterns on both the Scanning and Consolidation appliances", "options": ["Load Balancer information is discovered using SNMP", "A = B and A HAS SUBWORD B", "By specifying the exclusion in Manage > Discovery > Add Exclusion Range", "It is recommended to install patterns on both the Scanning and Consolidation appliances"], "correct": [3], "multi": false}, {"id": 12, "q": "Which statement describes the Discovery Radar chart?", "answerText": "It classifies the status of discovery methods based on the last discovery run", "options": ["It is recommended to install patterns on both the Scanning and Consolidation appliances", "A = B and A HAS SUBWORD B", "It classifies the status of discovery methods based on the last discovery run", "By specifying the exclusion in Manage > Discovery > Add Exclusion Range"], "correct": [2], "multi": false}, {"id": 13, "q": "Which is the secure repository in BMC Discovery where the login credentials are stored?", "answerText": "Credential Vault", "options": ["Administration > Security > Active Sessions", "Record", "Credential Vault", "/Reports"], "correct": [2], "multi": false}, {"id": 14, "q": "Which is the correct statement that describes Dark Space?", "answerText": "An IP address that has not responded to discovery", "options": ["An IP address that has not responded to discovery", "Discovery skips the additional endpoints for a host if a successful discovery access has been achieved through another endpoint", "It monitors the changes to the configuration of a BMC Discovery appliance", "A = B and A HAS SUBWORD B"], "correct": [0], "multi": false}, {"id": 15, "q": "Which is one of the discovery methods required for a host to be inferred by BMC Discovery?", "answerText": "getHostInfo", "options": ["tideway", "getHostInfo", "Record", "model.addDisplayAttribute"], "correct": [1], "multi": false}, {"id": 16, "q": "What is the condition for changing the cluster coordinator if the cluster coordinator has failed?", "answerText": "Fault tolerance must be enabled", "options": ["To prevent data loss", "Fault tolerance must be enabled", "It is recommended to install patterns on both the Scanning and Consolidation appliances", "Fault Tolerance in a cluster is an option, not a requirement"], "correct": [1], "multi": false}, {"id": 17, "q": "The network security team has given you a list of IP addresses that are not to be scanned. How can you prevent these IP addresses from being accessed during a discovery scan?", "answerText": "By specifying the exclusion in Manage > Discovery > Add Exclusion Range", "options": ["Continuous Sync and AD-HOC sync", "A proprietary Object based datastore", "Script, Result, and Access Method", "By specifying the exclusion in Manage > Discovery > Add Exclusion Range"], "correct": [3], "multi": false}, {"id": 18, "q": "What is the purpose of enabling Fault Tolerance in BMC Discovery clusters?", "answerText": "To prevent data loss", "options": ["To prevent data loss", "Fault tolerance must be enabled", "It classifies the status of discovery methods based on the last discovery run", "Display the source from where an inferred node or attribute was derived"], "correct": [0], "multi": false}, {"id": 19, "q": "How do you access the Query Builder while looking at data in a report or a list view in BMC Discovery?", "answerText": "Customize button", "options": ["Administration > Model > View Taxonomy", "Summary Output", "Help > Rest API", "Customize button"], "correct": [3], "multi": false}, {"id": 20, "q": "Which is the recommended best practice to successfully add a custom report?", "answerText": "Restart the UI/appserver process after updating report config (tw_service_control --restart appserver)", "options": ["tw_service_control --restart reports", "Restart the UI/appserver process after updating report config (tw_service_control --restart appserver)", "tw_upduser --active system", "_tw_meta_data_attrs"], "correct": [1], "multi": false}, {"id": 21, "q": "When using Query Builder, the default list view of columns for any kind is referred to as what?", "answerText": "Summary Output", "options": ["Administration > Security > Active Sessions", "Record", "Summary Output", "Customize button"], "correct": [2], "multi": false}, {"id": 22, "q": "Which are the supported file formats to export the results of a generic search query?", "answerText": "CSV and XML", "options": ["(SHOW) AS", "Customize button", "CSV and XML", "Ascending order"], "correct": [2], "multi": false}, {"id": 23, "q": "Which is the correct answer that lists the root nodes in CMDB Sync?", "answerText": "Host, Printer, Mainframe Part, Storage Device, and SNMP Managed Device", "options": ["Display the source from where an inferred node or attribute was derived", "It is recommended to install patterns on both the Scanning and Consolidation appliances", "It monitors the changes to the configuration of a BMC Discovery appliance", "Host, Printer, Mainframe Part, Storage Device, and SNMP Managed Device"], "correct": [3], "multi": false}, {"id": 24, "q": "What is the purpose of the TRAVERSE clause while writing a query?", "answerText": "To return nodes from a related node set so that attributes can be displayed", "options": ["A = B and A HAS SUBWORD B", "Taxonomy Name, Description, UI Display Name, and Type", "To return nodes from a related node set so that attributes can be displayed", "To summarize or modify the results from a query"], "correct": [2], "multi": false}, {"id": 25, "q": "Navigate to view the currently loaded taxonomy from the BMC Discovery user interface.", "answerText": "Administration > Model > View Taxonomy", "options": ["Administration > Model > View Taxonomy", "Administration > Security > Active Sessions", "Administration > Appliance > Appliance Support", "Help > Rest API"], "correct": [0], "multi": false}, {"id": 26, "q": "Which is the root element in an XML custom report file?", "answerText": "/Reports", "options": ["/Reports", "Model > Services and Applications", "/usr/tideway/data/installed/reports_content", "Administration > Security > Active Sessions"], "correct": [0], "multi": false}, {"id": 27, "q": "In search queries, which method is used to create friendly names for column headings?", "answerText": "(SHOW) AS", "options": ["Ascending order", "Summary Output", "Customize button", "(SHOW) AS"], "correct": [3], "multi": false}, {"id": 28, "q": "While writing a query, in which order will the attribute be displayed if you use only the ORDER BY function?", "answerText": "Ascending order", "options": ["Summary Output", "Customize button", "(SHOW) AS", "Ascending order"], "correct": [3], "multi": false}, {"id": 29, "q": "Which is the correct statement for the 00reports.xml file located at /usr/tideway/data/installed/reports_content/installed?", "answerText": "This is the default reports file", "options": ["This is the default reports file", "An IP address that has not responded to discovery", "Fault Tolerance in a cluster is an option, not a requirement", "It is recommended to install patterns on both the Scanning and Consolidation appliances"], "correct": [0], "multi": false}, {"id": 30, "q": "Where can you see all user interface sessions currently active on a BMC Discovery appliance?", "answerText": "Administration > Security > Active Sessions", "options": ["Administration > Security > Active Sessions", "/usr/tideway/data/installed/reports_content", "/usr/tideway/data/installed/taxonomy", "Administration > Appliance > Appliance Support"], "correct": [0], "multi": false}, {"id": 31, "q": "Which user account is used to log in to the BMC Discovery command line to test credentials?", "answerText": "tideway", "options": ["tideway", "root", "Unlocker", "system"], "correct": [0], "multi": false}, {"id": 32, "q": "In the Visualization screen, only nodes in the default Taxonomy can be seen.", "answerText": "False", "options": ["True", "False"], "correct": [1], "multi": false}, {"id": 33, "q": "Which is the correct statement regarding the relationship between dashboards and the Command Line Interface (CLI)?", "answerText": "The CLI can be used for locking and unlocking dashboards", "options": ["Unlocker, Discovery, System, Admin, Public", "The CLI can be used for locking and unlocking dashboards", "All Nodes belong to a Kind", "A predefined view of channels"], "correct": [1], "multi": false}, {"id": 34, "q": "Which command is used to unlock the system account from the CLI?", "answerText": "tw_upduser --active system", "options": ["sudo systemctl restart cluster", "tw_passwd --help", "tw_service_control --restart reports", "tw_upduser --active system"], "correct": [3], "multi": false}, {"id": 35, "q": "What happens when the channels in a dashboard are deleted or changed?", "answerText": "The changes to the dashboard apply automatically to all users of the current dashboard", "options": ["A predefined view of channels", "The CLI can be used for locking and unlocking dashboards", "Taxonomy Name, Description, UI Display Name, and Type", "The changes to the dashboard apply automatically to all users of the current dashboard"], "correct": [3], "multi": false}, {"id": 36, "q": "Select the correct option related to Taxonomy.", "answerText": "All Nodes belong to a Kind", "options": ["All Nodes belong to a Kind", "Taxonomy Name, Description, UI Display Name, and Type", "A predefined view of channels", "The CLI can be used for locking and unlocking dashboards"], "correct": [0], "multi": false}, {"id": 37, "q": "From which two locations can you access the REST API?", "answerText": "Help > Rest API and /swagger/UI", "options": ["/swagger/UI", "Help > Rest API", "Default", "send interim findings to the application owner without sharing appliance credentials"], "correct": [1, 0], "multi": true}, {"id": 38, "q": "In which directory should you save custom reports?", "answerText": "/usr/tideway/data/custom/reports", "options": ["/usr/tideway/data/custom/reports", "/usr/tideway/data/installed/reports_content", "/usr/tideway/data/installed/taxonomy", "/usr/tideway/tw_tax_import.log"], "correct": [0], "multi": false}, {"id": 39, "q": "Which command should be used to restart the Discovery Service that would import a custom report?", "answerText": "tw_service_control --restart reports", "options": ["tw_service_control --restart reports", "tw_service_control --restart appserver", "sudo systemctl restart cluster", "tw_upduser --active system"], "correct": [0], "multi": false}, {"id": 40, "q": "Which is the correct syntax to restart the cluster services from the CLI?", "answerText": "sudo systemctl restart cluster", "options": ["tw_service_control --restart reports", "tw_passwd --help", "Restart the UI/appserver process after updating report config (tw_service_control --restart appserver)", "sudo systemctl restart cluster"], "correct": [3], "multi": false}, {"id": 41, "q": "Which directory contains UNIX discovery data that can be used for diagnostics?", "answerText": "Record", "options": ["getHostInfo", "Record", "tideway", "Credential Vault"], "correct": [1], "multi": false}, {"id": 42, "q": "How do you access the Session Log files?", "answerText": "Administration > Appliance > Appliance Support", "options": ["Help > Rest API and /swagger/UI", "/usr/tideway/data/installed/taxonomy", "Administration > Appliance > Appliance Support", "/usr/tideway/tw_tax_import.log"], "correct": [2], "multi": false}, {"id": 43, "q": "Which is the correct statement for the appliance snapshot (Backup) utility?", "answerText": "It takes a snapshot of the datastore and critical configuration files", "options": ["A representation of an entity in an environment", "It takes a snapshot of the datastore and critical configuration files", "Business Services can be defined without using a Blueprint definition", "Specific IP Addresses before IP Address ranges"], "correct": [1], "multi": false}, {"id": 44, "q": "Which is an invalid argument for the tw_service_control command?", "answerText": "End", "options": ["End", "Path Restrictions", "(SHOW) AS", "Credential Vault"], "correct": [0], "multi": false}, {"id": 45, "q": "Which directory stores the default report files?", "answerText": "/usr/tideway/data/installed/reports_content", "options": ["/usr/tideway/var/pool", "/usr/tideway/data/installed/reports_content", "/usr/tideway/data/custom/reports", "/usr/tideway/data/installed/taxonomy"], "correct": [1], "multi": false}, {"id": 46, "q": "Which statement describes the functionality of the Appliance Baseline mechanism?", "answerText": "It monitors the changes to the configuration of a BMC Discovery appliance", "options": ["Host, Printer, Mainframe Part, Storage Device, and SNMP Managed Device", "It monitors the changes to the configuration of a BMC Discovery appliance", "Display the source from where an inferred node or attribute was derived", "PowerShell API using HTTPS"], "correct": [1], "multi": false}, {"id": 47, "q": "BMC Discovery automatically generates provenance data which is used to do what?", "answerText": "Display the source from where an inferred node or attribute was derived", "options": ["Script, Result, and Access Method", "Display the source from where an inferred node or attribute was derived", "It was not completed within its scheduled scan window", "Host, Printer, Mainframe Part, Storage Device, and SNMP Managed Device"], "correct": [1], "multi": false}, {"id": 48, "q": "Which answer contains details shown for each Taxonomy attribute?", "answerText": "Taxonomy Name, Description, UI Display Name, and Type", "options": ["To return nodes from a related node set so that attributes can be displayed", "Taxonomy Name, Description, UI Display Name, and Type", "Knowledge of the Query Language is not required", "The changes to the dashboard apply automatically to all users of the current dashboard"], "correct": [1], "multi": false}, {"id": 49, "q": "Which answer contains only default groups?", "answerText": "Unlocker, Discovery, System, Admin, Public", "options": ["A = B and A HAS SUBWORD B", "An IP address that has not responded to discovery", "Unlocker, Discovery, System, Admin, Public", "Gather the relevant files from Administration > Appliance > Appliance Support"], "correct": [2], "multi": false}, {"id": 50, "q": "You have been asked to provide a package of BMC Discovery log files by Customer Support. What is the recommended way to produce this?", "answerText": "Gather the relevant files from Administration > Appliance > Appliance Support", "options": ["Unlocker, Discovery, System, Admin, Public", "To prevent data loss", "An IP address that has not responded to discovery", "Gather the relevant files from Administration > Appliance > Appliance Support"], "correct": [3], "multi": false}, {"id": 51, "q": "When an appliance joins a cluster, its data will be maintained because the Coordinator distributes it across the other members.", "answerText": "False", "options": ["True", "False"], "correct": [1], "multi": false}, {"id": 52, "q": "In a Cluster environment, the Cluster Coordinator handles multiple tasks; however, scanning is not one of them.", "answerText": "False", "options": ["False", "True"], "correct": [0], "multi": false}, {"id": 53, "q": "Regarding Discovery Scripts, the term Platform is equivalent to an Operating System.", "answerText": "True", "options": ["False", "True"], "correct": [1], "multi": false}, {"id": 54, "q": "What statement best describes the internal Discovery database?", "answerText": "A proprietary Object based datastore", "options": ["It classifies the status of discovery methods based on the last discovery run", "A proprietary Object based datastore", "Host, Printer, Mainframe Part, Storage Device, and SNMP Managed Device", "PowerShell API using HTTPS"], "correct": [1], "multi": false}, {"id": 55, "q": "Which answer best represents the Best Practice for ordering Credentials?", "answerText": "Specific IP Addresses before IP Address ranges", "options": ["It takes a snapshot of the datastore and critical configuration files", "Business Services can be defined without using a Blueprint definition", "Specific IP Addresses before IP Address ranges", "A representation of an entity in an environment"], "correct": [2], "multi": false}, {"id": 56, "q": "What happens when BMC Discovery discovers a host with multiple endpoints?", "answerText": "Discovery skips the additional endpoints for a host if a successful discovery access has been achieved through another endpoint", "options": ["It classifies the status of discovery methods based on the last discovery run", "Discovery skips the additional endpoints for a host if a successful discovery access has been achieved through another endpoint", "A = B and A HAS SUBWORD B", "Used to access information held in centralized shared data stores"], "correct": [1], "multi": false}, {"id": 57, "q": "Which discovery protocol allows logging in without credentials?", "answerText": "Port Scanning", "options": ["Customize button", "model.addDisplayAttribute", "getHostInfo", "Port Scanning"], "correct": [3], "multi": false}, {"id": 58, "q": "Which option is a correct statement regarding Query Builder?", "answerText": "Knowledge of the Query Language is not required", "options": ["To find and include all the nodes that can be reached via relationships and for summarizing", "Knowledge of the Query Language is not required", "A = B and A HAS SUBWORD B", "To summarize or modify the results from a query"], "correct": [1], "multi": false}, {"id": 59, "q": "Identify the reason for choosing to use the PROCESSWITH clause while writing a query.", "answerText": "To summarize or modify the results from a query", "options": ["To find and include all the nodes that can be reached via relationships and for summarizing", "To summarize or modify the results from a query", "A = B and A HAS SUBWORD B", "Knowledge of the Query Language is not required"], "correct": [1], "multi": false}, {"id": 60, "q": "Which option will result in the fastest performance while running a query in BMC Discovery?", "answerText": "A = B and A HAS SUBWORD B", "options": ["Script, Result, and Access Method", "Host, Printer, Mainframe Part, Storage Device, and SNMP Managed Device", "By specifying the exclusion in Manage > Discovery > Add Exclusion Range", "A = B and A HAS SUBWORD B"], "correct": [3], "multi": false}, {"id": 61, "q": "Identify the reason for choosing to use the EXPAND clause while writing a query.", "answerText": "To find and include all the nodes that can be reached via relationships and for summarizing", "options": ["A = B and A HAS SUBWORD B", "To find and include all the nodes that can be reached via relationships and for summarizing", "To summarize or modify the results from a query", "To return nodes from a related node set so that attributes can be displayed"], "correct": [1], "multi": false}, {"id": 62, "q": "Which is the correct statement that describes a dashboard?", "answerText": "A predefined view of channels", "options": ["The CLI can be used for locking and unlocking dashboards", "A predefined view of channels", "Taxonomy Name, Description, UI Display Name, and Type", "The changes to the dashboard apply automatically to all users of the current dashboard"], "correct": [1], "multi": false}, {"id": 63, "q": "Which is the default port number used by Discovery to communicate with a Windows Credential Proxy service?", "answerText": "4323", "options": ["4323", "443", "445/TCP", "135/TCP"], "correct": [0], "multi": false}, {"id": 64, "q": "Regarding Discovery Scripts, there is only one set of scripts to support all variants of Linux and Unix.", "answerText": "False", "options": ["True", "False"], "correct": [1], "multi": false}, {"id": 65, "q": "In which directory is the default taxonomy located?", "answerText": "/usr/tideway/data/installed/taxonomy", "options": ["Administration > Model > View Taxonomy", "/usr/tideway/data/custom/reports", "/usr/tideway/data/installed/taxonomy", "Help > Rest API and /swagger/UI"], "correct": [2], "multi": false}, {"id": 66, "q": "Which is the default port an Outpost uses to connect with either an On-Prem appliance or a Helix Service?", "answerText": "443", "options": ["443", "445/TCP", "4323", "135/TCP"], "correct": [0], "multi": false}, {"id": 67, "q": "Which of the following options accurately displays the correct syntax for help for a command line command such as tw_passwd?", "answerText": "tw_passwd --help", "options": ["tw_service_control --restart reports", "tw_passwd --help", "tw_upduser --active system", "sudo systemctl restart cluster"], "correct": [1], "multi": false}, {"id": 68, "q": "Exclude ranges cannot be scheduled.", "answerText": "True", "options": ["False", "True"], "correct": [1], "multi": false}, {"id": 69, "q": "What is the name of the attribute that allows you to display a new SI attribute in the discovery interface?", "answerText": "_tw_meta_data_attrs", "options": ["_tw_meta_data_attrs", "tw_service_control --restart reports", "tw_upduser --active system", "tw_passwd --help"], "correct": [0], "multi": false}, {"id": 70, "q": "Identify the correct statement that describes the product_version attribute.", "answerText": "It should represent the version of a program as it appears when marketed by the publisher", "options": ["Discovered Processes not identified by patterns", "It should represent the version of a program as it appears when marketed by the publisher", "It is recommended to install patterns on both the Scanning and Consolidation appliances", "Begin the process with very little seed data, send interim findings to the application owner without sharing appliance credentials, and do not need to write TPL in the entire process"], "correct": [1], "multi": false}, {"id": 71, "q": "Which is the correct file type to create or add your own pattern module?", "answerText": ".tpl", "options": [".tpl", "/Reports", "_tw_meta_data_attrs", "Monthly"], "correct": [0], "multi": false}, {"id": 72, "q": "By default, how often are patterns updated through Technology Knowledge Updates (TKUs)?", "answerText": "Monthly", "options": ["Monthly", "443", "Ascending order", "4323"], "correct": [0], "multi": false}, {"id": 73, "q": "Which three are considered best practices for developing patterns?", "answerText": "Create meaningful module names at appropriate points in the hierarchy, use meaningful TPL variable names, and set attributes for which you tried but failed to get data such as version or product_version", "options": ["Create meaningful module names at appropriate points in the hierarchy", "set attributes for which you tried but failed to get data such as version or product_version", "Continuous Sync", "use meaningful TPL variable names", "/swagger/UI", "Begin the process with very little seed data"], "correct": [0, 3, 1], "multi": true}, {"id": 74, "q": "What does the term Data Source mean as applied to Discovery?", "answerText": "Used to access information held in centralized shared data stores", "options": ["It was not completed within its scheduled scan window", "Used to access information held in centralized shared data stores", "By specifying the exclusion in Manage > Discovery > Add Exclusion Range", "Host, Printer, Mainframe Part, Storage Device, and SNMP Managed Device"], "correct": [1], "multi": false}, {"id": 75, "q": "What is the default setting for synchronizing root nodes to CMDB?", "answerText": "All root nodes are synchronised", "options": ["Begin the process with very little seed data, send interim findings to the application owner without sharing appliance credentials, and do not need to write TPL in the entire process", "All root nodes are synchronised", "Continuous Sync and AD-HOC sync", "Used to access information held in centralized shared data stores"], "correct": [1], "multi": false}, {"id": 76, "q": "Which three statements are correct in regard to Collaborative Application Mapping (CAM)?", "answerText": "Begin the process with very little seed data, send interim findings to the application owner without sharing appliance credentials, and do not need to write TPL in the entire process", "options": ["Begin the process with very little seed data", "Continuous Sync", "send interim findings to the application owner without sharing appliance credentials", "AD-HOC sync", "do not need to write TPL in the entire process", "Create meaningful module names at appropriate points in the hierarchy"], "correct": [0, 2, 4], "multi": true}, {"id": 77, "q": "What is the name of the function that allows you to display a new SI attribute in the Discovery interface?", "answerText": "model.addDisplayAttribute", "options": ["Record", "getHostInfo", "model.addDisplayAttribute", "An Outpost"], "correct": [2], "multi": false}, {"id": 78, "q": "What is a node?", "answerText": "A representation of an entity in an environment", "options": ["Business Services can be defined without using a Blueprint definition", "Specific IP Addresses before IP Address ranges", "A representation of an entity in an environment", "It takes a snapshot of the datastore and critical configuration files"], "correct": [2], "multi": false}, {"id": 79, "q": "Which two methods of Synchronizing discovery data to CMDB are supported?", "answerText": "Continuous Sync and AD-HOC sync", "options": ["AD-HOC sync", "Continuous Sync", "getHostInfo", "do not need to write TPL in the entire process"], "correct": [1, 0], "multi": true}, {"id": 80, "q": "Which is a correct statement about Blueprints?", "answerText": "Business Services can be defined without using a Blueprint definition", "options": ["Default, Named, and Network", "A representation of an entity in an environment", "Business Services can be defined without using a Blueprint definition", "It takes a snapshot of the datastore and critical configuration files"], "correct": [2], "multi": false}, {"id": 81, "q": "Where in the UI do you access Blueprints?", "answerText": "Model > Services and Applications", "options": ["Administration > Security > Active Sessions", "Administration > Model > View Taxonomy", "Model > Services and Applications", "Help > Rest API"], "correct": [2], "multi": false}, {"id": 82, "q": "How are Candidate software instances identified?", "answerText": "Discovered Processes not identified by patterns", "options": ["Discovered Processes not identified by patterns", "Begin the process with very little seed data, send interim findings to the application owner without sharing appliance credentials, and do not need to write TPL in the entire process", "Create meaningful module names at appropriate points in the hierarchy, use meaningful TPL variable names, and set attributes for which you tried but failed to get data such as version or product_version", "It should represent the version of a program as it appears when marketed by the publisher"], "correct": [0], "multi": false}, {"id": 83, "q": "Which modelling methodology allows you to choose an entry point or points into an application and begin immediately modelling?", "answerText": "SAM", "options": ["Ascending order", "SAM", "Monthly", "Summary Output"], "correct": [1], "multi": false}, {"id": 84, "q": "Which file needs to be configured on any Linux/UNIX discovery targets if sudo is being used?", "answerText": "/etc/sudoers", "options": ["/usr/tideway/tw_tax_import.log", "/usr/tideway/data/installed/taxonomy", "/usr/tideway/data/custom/reports", "/etc/sudoers"], "correct": [3], "multi": false}, {"id": 85, "q": "Which feature introduced in version 20.08 allows for commands to only be executed from specific locations?", "answerText": "Path Restrictions", "options": ["WBEM", "Path Restrictions", "An Outpost", "Possible Process to Port issues"], "correct": [1], "multi": false}, {"id": 86, "q": "What type of credentials are required for SAN Storage Discovery?", "answerText": "WBEM", "options": ["Port Scanning", "SNMP", "Windows Management Instrumentation (WMI)", "WBEM"], "correct": [3], "multi": false}, {"id": 87, "q": "Which report would be most useful when investigating missing connection mapping information?", "answerText": "Possible Process to Port issues", "options": ["Possible Process to Port issues", "Path Restrictions", "Record", "Summary Output"], "correct": [0], "multi": false}, {"id": 88, "q": "The customer requires discovery of the DMZ. Which Discovery component is used?", "answerText": "An Outpost", "options": ["Dashboard", "Credential Vault", "An Outpost", "Record"], "correct": [2], "multi": false}, {"id": 89, "q": "Which file should be checked for logged errors after importing a taxonomy extension?", "answerText": "/usr/tideway/tw_tax_import.log", "options": ["/usr/tideway/data/installed/taxonomy", "/usr/tideway/var/pool", "/usr/tideway/tw_tax_import.log", "/usr/tideway/data/custom/reports"], "correct": [2], "multi": false}, {"id": 90, "q": "What is the usual cause of a discovery run displaying On Hold?", "answerText": "It was not completed within its scheduled scan window", "options": ["Used to access information held in centralized shared data stores", "An IP address that has not responded to discovery", "It was not completed within its scheduled scan window", "getHostInfo, getMACAddresses, and getDeviceInfo"], "correct": [2], "multi": false}];
-const bulletMultiCount = 6;
+const DEFAULT_QUESTION_COUNT = 25;
+const STORAGE_KEY = 'bmc_ultra_trap_mastered';
+const WRONG_KEY = 'bmc_ultra_trap_wrong';
+const SETTINGS_KEY = 'bmc_ultra_trap_pro_settings';
+let focusMode = false;
+let activeQuestions = [];
+let answersVisible = false;
+
+const questionPool = [
+
+/* ===============================
+   DISCOVERY / ADMINISTRATORS
+   Quellen: turn14search33, turn15search34
+=============================== */
+
+{
+  id: 1,
+  q: "When an appliance joins a cluster, its data will be maintained because the Coordinator distributes it across the other members. (True / False)",
+  answerText: "False",
+  options: ["True", "False"],
+  correct: [1],
+  multi: false
+},
+{
+  id: 2,
+  q: "Which is a correct statement about Clusters?",
+  answerText: "Fault Tolerance in a cluster is an option, not a requirement",
+  options: [
+    "The number of Cluster Coordinators is based on the number of members in the cluster",
+    "Fault Tolerance in a cluster is an option, not a requirement",
+    "The maximum number of members in a cluster is 19",
+    "Once an appliance joins a cluster as a member, it can never become a coordinator"
+  ],
+  correct: [1],
+  multi: false
+},
+{
+  id: 3,
+  q: "When a Cluster Coordinator fails, the next member in the cluster will become the new Cluster Coordinator. (True / False)",
+  answerText: "False",
+  options: ["True", "False"],
+  correct: [1],
+  multi: false
+},
+{
+  id: 4,
+  q: "Both Linux scripts and Windows scripts can be edited. (True / False)",
+  answerText: "False",
+  options: ["True", "False"],
+  correct: [1],
+  multi: false
+},
+{
+  id: 5,
+  q: "It is possible to perform all of the following actions on the Cluster Management page, except:",
+  answerText: "Rename Cluster",
+  options: [
+    "Rename Cluster",
+    "Shut down Cluster",
+    "Enable Maintenance mode",
+    "Edit a member"
+  ],
+  correct: [0],
+  multi: false
+},
+{
+  id: 6,
+  q: "Identify the correct statement regarding the discovery of Load Balancers:",
+  answerText: "Load Balancer information is discovered using SNMP",
+  options: [
+    "Load Balancer information is discovered using SNMP",
+    "Discovering a Load Balancer Pool requires a separate license",
+    "By default, Load Balancers are not displayed in the Visualization Screen",
+    "Load Balancers belong to the same kind as Network Routers"
+  ],
+  correct: [0],
+  multi: false
+},
+{
+  id: 7,
+  q: "Regarding Clusters and Consolidation: An Appliance can be a Cluster Coordinator while at the same time being a Consolidator. (True / False)",
+  answerText: "True",
+  options: ["True", "False"],
+  correct: [0],
+  multi: false
+},
+{
+  id: 8,
+  q: "Which lists all the available actions that are performed on a module from within the Pattern Modules screen?",
+  answerText: "Activate, Deactivate, Delete, Download Visible Modules",
+  options: [
+    "Delete, Manual Groups, Activate, Deactivate",
+    "Delete, Activate, View History, Download",
+    "Activate, Deactivate, Delete, Download Visible Modules",
+    "Upload, Download, View History, Deactivate"
+  ],
+  correct: [2],
+  multi: false
+},
+{
+  id: 9,
+  q: "In a Cluster environment, the Cluster Coordinator handles multiple tasks; however, scanning is not one of them. (True / False)",
+  answerText: "False",
+  options: ["True", "False"],
+  correct: [1],
+  multi: false
+},
+{
+  id: 10,
+  q: "Regarding Discovery Scripts, the term \"Platform\" is equivalent to an Operating System. (True / False)",
+  answerText: "True",
+  options: ["True", "False"],
+  correct: [0],
+  multi: false
+},
+{
+  id: 11,
+  q: "Which are the three types of Scope types? (Select three)",
+  answerText: "Default, Named, Internet",
+  options: ["Default", "Named", "Network", "Internet", "Outpost"],
+  correct: [0, 1, 3],
+  multi: true
+},
+{
+  id: 12,
+  q: "Which answer accurately lists elements included in the Standard Discovery Section from a Discovery run?",
+  answerText: "Script, Result, Access, Method",
+  options: [
+    "Method, Script, Result, Platform",
+    "Script, Result, Access, Method",
+    "Access, Method, Script, Platform",
+    "Result, Platform, Method, Status"
+  ],
+  correct: [1],
+  multi: false
+},
+{
+  id: 13,
+  q: "Which is an invalid IP Address when entering in a Discovery scan?",
+  answerText: "IP v6 range",
+  options: ["IP v4 address", "IP v6 range", "IP v4 range", "IP v6 address"],
+  correct: [1],
+  multi: false
+},
+{
+  id: 14,
+  q: "What statement best describes the internal Discovery database?",
+  answerText: "A proprietary Object based datastore",
+  options: [
+    "A relational database",
+    "A proprietary Object based datastore",
+    "PostgresSQL open source datastore",
+    "MicrosoftSQL database"
+  ],
+  correct: [1],
+  multi: false
+},
+{
+  id: 15,
+  q: "Which answer best represents the Best Practice for ordering Credentials?",
+  answerText: "Specific IP Addresses before IP Address ranges",
+  options: [
+    "IP Address ranges before specific IP Addresses",
+    "Specific IP Addresses before IP Address ranges",
+    "SSH password before an SSH key",
+    "SSH password before an SSH"
+  ],
+  correct: [1],
+  multi: false
+},
+{
+  id: 16,
+  q: "There are circumstances when Discovery will execute patterns prior to Standard Discovery. (True / False)",
+  answerText: "False",
+  options: ["True", "False"],
+  correct: [1],
+  multi: false
+},
+{
+  id: 17,
+  q: "A Windows Proxy Pool can contain both Windows Active Directory Proxies and Credential Proxies. (True / False)",
+  answerText: "False",
+  options: ["True", "False"],
+  correct: [1],
+  multi: false
+},
+{
+  id: 18,
+  q: "Which option lists the three types of channels that can be created?",
+  answerText: "Summary, Video, Reports",
+  options: [
+    "Report, Summary, Kinds",
+    "Summary, Video, Reports",
+    "Video, Custom, Summary",
+    "Report, Kinds, Video"
+  ],
+  correct: [1],
+  multi: false
+},
+{
+  id: 19,
+  q: "Windows Proxy Pools are not needed if only 1 proxy is to be added. (True / False)",
+  answerText: "False",
+  options: ["True", "False"],
+  correct: [1],
+  multi: false
+},
+{
+  id: 20,
+  q: "Which are the three scripts that must run successfully to infer a Host?",
+  answerText: "getHostInfo, getMACAddresses, getDeviceInfo",
+  options: [
+    "getDeviceInfo, getProcessList, getHostInfo",
+    "getHostInfo, getMACAddresses, getDeviceInfo",
+    "getMACAddresses, getProcessList, getDeviceInfo",
+    "Get HostInfo, getMACAddresses, getDirectoryListing"
+  ],
+  correct: [1],
+  multi: false
+},
+{
+  id: 21,
+  q: "Choose the correct answer that represents Inferred Data.",
+  answerText: "Business Application, Software Instances, Host",
+  options: [
+    "Software Packages, Software Instances, Process List",
+    "Business Application, Software Instances, Host",
+    "Directory Listing, Host, Process List",
+    "Software Packages, Software Instances, Host"
+  ],
+  correct: [1],
+  multi: false
+},
+{
+  id: 22,
+  q: "Which is a correct statement regarding using a Consolidation Appliance?",
+  answerText: "It is recommended to install patterns on both the Scanning and Consolidation appliances",
+  options: [
+    "It is recommended to install patterns on both the Scanning and Consolidation appliances",
+    "It is recommended to install patterns only on the Scanning appliance",
+    "It is recommended to install patterns only on the Consolidation appliance",
+    "There is no need to install patterns on the Scanning or Consolidation appliance"
+  ],
+  correct: [0],
+  multi: false
+},
+{
+  id: 23,
+  q: "What are SSH, Telnet, and rlogin?",
+  answerText: "Access Types",
+  options: ["Discovery Commands", "Access Types", "Discovery Scripts", "Discovery Methods"],
+  correct: [1],
+  multi: false
+},
+{
+  id: 24,
+  q: "Which is the correct statement that describes Dark Space?",
+  answerText: "An IP address that has not responded to discovery",
+  options: [
+    "All networking devices",
+    "An IP address that has not responded to discovery",
+    "Sections of the network that do not have hosts",
+    "Hosts within the datastore that are marked for destruction"
+  ],
+  correct: [1],
+  multi: false
+},
+{
+  id: 25,
+  q: "Which is the secure repository in BMC Discovery where the login credentials are stored?",
+  answerText: "Credential Vault",
+  options: ["Data Store Vault", "Credential Store", "Credential Vault", "Secure Data Store"],
+  correct: [2],
+  multi: false
+},
+{
+  id: 26,
+  q: "Which option describes a Community String?",
+  answerText: "Authentication for an SNMP credential",
+  options: [
+    "BMC Community entries",
+    "Authentication for an SNMP credential",
+    "The output from tw_capture",
+    "Platform discovery scripts"
+  ],
+  correct: [1],
+  multi: false
+},
+{
+  id: 27,
+  q: "Which method does BMC Discovery use by default to discover details about Windows hosts?",
+  answerText: "Windows Management Instrumentation (WMI)",
+  options: ["Query", "Directly query the registry", "SNMP", "Windows Management Instrumentation (WMI)"],
+  correct: [3],
+  multi: false
+},
+{
+  id: 28,
+  q: "Which of the following statements describes the Discovery Radar chart?",
+  answerText: "Classifies the status of the last access to IP addresses to help direct troubleshooting activity",
+  options: [
+    "Classifies the status of discovery methods based on the last discovery run",
+    "Classifies the status of the last access to IP addresses to help direct troubleshooting activity",
+    "Classifies the status of the discovered UNIX and Windows hosts by access type",
+    "Classifies the status of the discovery scripts based on the last discovery run"
+  ],
+  correct: [1],
+  multi: false
+},
+{
+  id: 29,
+  q: "What is the purpose of enabling Fault Tolerance in BMC Discovery clusters?",
+  answerText: "To prevent data loss",
+  options: [
+    "To be able to configure one of the cluster members as cluster coordinator if the cluster coordinator goes offline",
+    "To prevent data loss",
+    "To provide enriched error reporting on the cluster",
+    "To set a threshold for number of errors before the cluster is automatically taken offline"
+  ],
+  correct: [1],
+  multi: false
+},
+{
+  id: 30,
+  q: "Which is one of the discovery method required for a host to be inferred by BMC Discovery?",
+  answerText: "getHostInfo",
+  options: ["getHostInfo", "getHardwareInfo", "getAddressList", "getProcessList"],
+  correct: [0],
+  multi: false
+},
+{
+  id: 31,
+  q: "On a default configured BMC Discovery, you are executing a Discovery run. All hosts being scanned have default discovery ports open and all credentials are configured to \"Match All\". Which discovery access method will BMC Discovery always try first?",
+  answerText: "UNIX",
+  options: ["HTTPget", "Windows", "UNIX", "SNMP"],
+  correct: [2],
+  multi: false
+},
+{
+  id: 32,
+  q: "What happens when BMC Discovery discovers a host with multiple endpoints?",
+  answerText: "Discovery skips the additional endpoints for a host, if a successful discovery access has been achieved through another endpoint",
+  options: [
+    "Discovery scans all endpoints for a host regardless of activity on that IP address",
+    "Discovery skips the additional endpoints for a host, if a successful discovery access has been achieved through another endpoint",
+    "Discovery adds a host's additional endpoints to the exclude list and will skip on all future discovery runs",
+    "Discovery scan exits with a warning"
+  ],
+  correct: [1],
+  multi: false
+},
+{
+  id: 33,
+  q: "Which discovery protocol allows logging in without credentials?",
+  answerText: "Port Scanning",
+  options: ["RemQuery", "Port Scanning", "FTP", "WMI"],
+  correct: [1],
+  multi: false
+},
+{
+  id: 34,
+  q: "The network security team has given you a list of IP addresses that are not to be scanned. How can you stop these IP addresses from being accessed during a discovery scan?",
+  answerText: "By specifying the exclusion in Manage > Discovery > Add Exclusion Range",
+  options: [
+    "By specifying the exclusion in Manage > Discovery > Add Exclusion Range",
+    "By specifying the excluded hosts by name or IP address when running a scan",
+    "By setting up the excluded IP ranges in Manage > Discovery > Add New Exclude",
+    "By setting up the Exclude flag for the Servers in Setup > Discovery"
+  ],
+  correct: [0],
+  multi: false
+},
+{
+  id: 35,
+  q: "What is the condition for changing the cluster coordinator if the cluster coordinator has failed?",
+  answerText: "Fault tolerance must be enabled",
+  options: [
+    "Fault tolerance must be disabled",
+    "Failover must be configured",
+    "Fault tolerance must be enabled",
+    "Failover must be enabled"
+  ],
+  correct: [2],
+  multi: false
+},
+{
+  id: 36,
+  q: "When using Query Builder, the default list view of columns for any kind is referred to as:",
+  answerText: "Summary Output",
+  options: ["Default Output", "Summary Output", "Node Output", "List Output"],
+  correct: [1],
+  multi: false
+},
+{
+  id: 37,
+  q: "Which are the supported file formats to export the results of a generic search query?",
+  answerText: "CSV and XML",
+  options: ["CSV and XML", "TPL and XTS", "XLS and CSV", "PDF and XLS"],
+  correct: [0],
+  multi: false
+},
+{
+  id: 38,
+  q: "Select the answer which best represents the correct order to maximize query optimization.",
+  answerText: "A = B, A has subword B, A = has substring B, A matches B",
+  options: [
+    "A = B, A has substring B, A = has subword B, A matches B",
+    "A = B, A has subword B, A = has substring B, A matches B",
+    "A = B, A matches B, A = has subword B, A has substring B",
+    "A = B, A has substring B, A matches B, A = has subword B"
+  ],
+  correct: [1],
+  multi: false
+},
+{
+  id: 39,
+  q: "Select the answer that is most accurate pertaining to the Search language.",
+  answerText: "A Key Expression is used to return an attribute of a related node",
+  options: [
+    "A Key Expression is used to return an attribute of a related node",
+    "A Key Expression can only be used in conjunction with Traverse",
+    "Traverse can only be used when searching for nodes that have a dependency relationship",
+    "The Query Builder interface is not able to use a Key Expression"
+  ],
+  correct: [0],
+  multi: false
+},
+{
+  id: 40,
+  q: "Which answer best represents the required attributes for a Custom Report?",
+  answerText: "Name, Title, Description, Kind",
+  options: [
+    "Name, Title, Description, Kind",
+    "Name, Type, Description, Kind",
+    "Title, Kind, Type, Description",
+    "Title, Description, Kind, Columns"
+  ],
+  correct: [0],
+  multi: false
+},
+{
+  id: 41,
+  q: "Which is a correct statement regarding Query Builder?",
+  answerText: "Knowledge of the Query Language is not required",
+  options: [
+    "Query Builder requires extensive knowledge of the Taxonomy",
+    "Knowledge of the Query Language is not required",
+    "Complex Regular Expression searches can be used with Query Builder",
+    "The Expand and Explode functions can be used with Query Builder"
+  ],
+  correct: [1],
+  multi: false
+},
+{
+  id: 42,
+  q: "Identify the reason for choosing to use the PROCESSWITH clause while writing a query.",
+  answerText: "To summarize or modify the results from a query",
+  options: [
+    "To display a count of the attributes on a single line",
+    "To find all the nodes that can be reached via particular relationships",
+    "To summarize or modify the results from a query",
+    "To display attributes from a related node set"
+  ],
+  correct: [2],
+  multi: false
+},
+{
+  id: 43,
+  q: "Which is the correct answer that lists the root nodes in CMDB Sync?",
+  answerText: "Host, Printer, Mainframe Part, Storage Device, SNMP Managed Device",
+  options: [
+    "Host, Network Device, Mainframe Part, Printer, Software Instance, Business Application",
+    "Host, Printer, Mainframe Part, Storage Device, SNMP Managed Device",
+    "Host, Printer, Software Instance, SNMP Managed Device, Network Device"
+  ],
+  correct: [1],
+  multi: false
+},
+{
+  id: 44,
+  q: "How do you access the Query Builder while looking at data in a report or a list view in BMC Discovery?",
+  answerText: "Customize button",
+  options: ["Visualizations menu", "Customize button", "Action menu", "Reports menu"],
+  correct: [1],
+  multi: false
+},
+{
+  id: 45,
+  q: "In search queries, which method should be used to create friendly names for columns headings?",
+  answerText: "SHOW AS",
+  options: ["DISPLAY", "SHOW AS", "USING", "WHERE"],
+  correct: [1],
+  multi: false
+},
+{
+  id: 46,
+  q: "What is the purpose of the TRAVERSE clause while writing a query?",
+  answerText: "To return nodes from a related node set so that attributes can be displayed",
+  options: [
+    "To return nodes from a related node set so that attributes can be displayed",
+    "To include all nodes in a traversal to the result, as in the case of the EXPAND clause",
+    "To summarize or modify the results from a query",
+    "To display a count of attributes on a single line"
+  ],
+  correct: [0],
+  multi: false
+},
+{
+  id: 47,
+  q: "Which is the root element in an XML custom report file?",
+  answerText: "/Reports",
+  options: ["/reports_custom", "/Reports", "/Custom", "/custom_report"],
+  correct: [1],
+  multi: false
+},
+{
+  id: 48,
+  q: "You have added some custom reports to the /usr/tideway/data/custom/reports directory. Identify the order in which they will be uploaded.",
+  answerText: "First in numerical order, followed by alphabetical order",
+  options: [
+    "In a random order",
+    "In the order that they were added to the directory",
+    "In a user-defined order",
+    "First in numerical order, followed by alphabetical order"
+  ],
+  correct: [3],
+  multi: false
+},
+{
+  id: 49,
+  q: "Which query will list names of hosts, operating systems, and vendors of any installed HBA card?",
+  answerText: "SEARCH Host SHOW name, os_type, #DeviceWithInterface:DeviceInterface:InterfaceOfDevice:FibreChannelHBA.vendor",
+  options: [
+    "SEARCH Host SHOW name, os_type, #DeviceWithInterface:DeviceInterface:InterfaceOfDevice:FibreChannelHBA.vendor",
+    "SEARCH Host SHOW name, os_type, DeviceWithInterface:DeviceInterface:InterfaceOfDevice:FibreChannelHBA.vendor",
+    "SEARCH Host SHOW name, os_type, #DeviceWithInterface:DeviceInterface:FibreChannelHBA.vendor",
+    "SEARCH Host SHOW name, os_type, FibreChannelHBA.vendor"
+  ],
+  correct: [0],
+  multi: false
+},
+{
+  id: 50,
+  q: "Which is the correct statement for the \"00reports.xml\" file located at \"/usr/tideway/data/reports_content/installed\"?",
+  answerText: "This is the default reports file",
+  options: [
+    "This is the custom reports file prior to activation",
+    "This is a blank file for user-customization",
+    "This is the default reports file for editing",
+    "This is the default reports file"
+  ],
+  correct: [3],
+  multi: false
+},
+{
+  id: 51,
+  q: "Navigate to view the currently loaded taxonomy from the BMC Discovery user interface.",
+  answerText: "Administration > Model > View Taxonomy",
+  options: [
+    "Administration > Model > View Taxonomy",
+    "Reports > Model > View Taxonomy",
+    "Administration > Model Maintenance > View Taxonomy",
+    "Infrastructure > View Taxonomy"
+  ],
+  correct: [0],
+  multi: false
+},
+{
+  id: 52,
+  q: "Which option will result in the fastest performance while running a query in BMC Discovery?",
+  answerText: "\"A = B\" and \"A HAS SUBWORD B\"",
+  options: [
+    "\"A = B\" and \"A MATCHES B\"",
+    "\"A = B\" and \"A HAS SUBWORD B\"",
+    "\"A HAS SUBSTRING B\"",
+    "\"A MATCHES B\""
+  ],
+  correct: [1],
+  multi: false
+},
+{
+  id: 53,
+  q: "Which query retrieves a list of all Software Instances running on Windows hosts?",
+  answerText: "SEARCH Host WHERE os type = \"Windows\" TRAVERSE Host:HostedSoftware:RunningSoftware:SoftwareInstance",
+  options: [
+    "SEARCH Host WHERE os type = \"Windows\" TRAVERSE Host:HostedSoftware:RunningSoftware:SoftwareInstance",
+    "SEARCH Host WHERE os type = \"Windows\" #Host:HostedSoftware:RunningSoftware:SoftwareInstance",
+    "SEARCH Host WHERE os type = \"Windows\" TRAVERSE #Host:RunningSoftware:SoftwareInstance",
+    "SEARCH Host WHERE os type = \"Windows\" Host:HostedSoftware:RunningSoftware:SoftwareInstance"
+  ],
+  correct: [0],
+  multi: false
+},
+{
+  id: 54,
+  q: "Identify the reason for choosing to use the EXPAND clause while writing a query.",
+  answerText: "To find and include all the nodes that can be reached via particular relationships and for summarizing",
+  options: [
+    "To summarize or modify the results from a query",
+    "To display a count of the attributes on a single line",
+    "To find and include all the nodes that can be reached via particular relationships and for summarizing",
+    "To display attributes from a related node set"
+  ],
+  correct: [2],
+  multi: false
+},
+{
+  id: 55,
+  q: "While writing a query, in which order will the attributes be displayed if you use only the ORDER BY function?",
+  answerText: "Ascending order",
+  options: ["Based on Taxonomy hierarchy", "Ascending order", "Descending order", "Node count order"],
+  correct: [1],
+  multi: false
+},
+{
+  id: 56,
+  q: "Which is the correct statement that describes a dashboard?",
+  answerText: "An arrangement of channels",
+  options: [
+    "An arrangement of channels",
+    "An arrangement of groups",
+    "An arrangement of manual groups",
+    "An arrangement of recent items"
+  ],
+  correct: [0],
+  multi: false
+},
+{
+  id: 57,
+  q: "Which answer contains details shown for each Taxonomy attribute?",
+  answerText: "Taxonomy Name, Description, UI Display Name, Type",
+  options: [
+    "Kind, Type, Description, Taxonomy Name",
+    "Taxonomy Name, Description, UI Display Name, Type",
+    "UI Name, Type, Description, Node Name",
+    "Kind, Taxonomy Name, Description, Type"
+  ],
+  correct: [1],
+  multi: false
+},
+{
+  id: 58,
+  q: "Which is the correct statement regarding the relationship between dashboards and the command line interface (CLI)?",
+  answerText: "The CLI can be used for locking and unlocking dashboards",
+  options: [
+    "One of the primary purposes of the command line is to add new channels",
+    "The CLI can be used for locking and unlocking dashboards",
+    "Making a copy of a dashboard can only be performed from the CLI",
+    "Dashboards can only be created and deleted by using the CLI"
+  ],
+  correct: [1],
+  multi: false
+},
+{
+  id: 59,
+  q: "What happens when the channels in a dashboard are deleted or changed?",
+  answerText: "The changes to the dashboard apply automatically to all users of the dashboard",
+  options: [
+    "The changes to the dashboard apply automatically to all users of the dashboard",
+    "The changes to the dashboard can be configured to apply to just the current user or all users of the dashboard",
+    "The changes to the dashboard can be configured to apply to specific users of the dashboard",
+    "The changes to the dashboard apply only to the current user that has modified the dashboard"
+  ],
+  correct: [0],
+  multi: false
+},
+{
+  id: 60,
+  q: "Select the correct option related to Taxonomy.",
+  answerText: "All Nodes belong to a Kind",
+  options: [
+    "All Kinds belong to a Node",
+    "All Nodes belong to a Kind",
+    "Kinds and Nodes are independent of each other and have no relationship"
+  ],
+  correct: [1],
+  multi: false
+},
+{
+  id: 61,
+  q: "Which is the default port number used by Discovery to communicate with a Windows Credential Proxy service?",
+  answerText: "4323",
+  options: ["4321", "4750", "4323", "4231"],
+  correct: [2],
+  multi: false
+},
+{
+  id: 62,
+  q: "Which command is used to unlock the system account from the CLI?",
+  answerText: "tw_upduser --active system",
+  options: [
+    "tw_passwd --system",
+    "tw_upduser --active system",
+    "tw_upduser --system",
+    "tw_passwd --active system"
+  ],
+  correct: [1],
+  multi: false
+},
+{
+  id: 63,
+  q: "Which user account is used to log to the BMC Discovery command line to test credentials?",
+  answerText: "tideway",
+  options: ["Discovery", "Admin", "tideway", "root"],
+  correct: [2],
+  multi: false
+},
+{
+  id: 64,
+  q: "BMC Discovery automatically generates provenance data which is used to:",
+  answerText: "Display the source from where an inferred node or attribute was derived",
+  options: [
+    "Display how the data was provisioned",
+    "Support data consolidation",
+    "Display the source from where an inferred node or attribute was derived",
+    "Support indexing of the inferred data"
+  ],
+  correct: [2],
+  multi: false
+},
+{
+  id: 65,
+  q: "Which is a correct statement for Windows proxies?",
+  answerText: "All Credential proxies are grouped in a Credential proxy pool",
+  options: [
+    "An Active Directory proxy can be configured without inclusion in a proxy pool",
+    "All Credential proxies are grouped in a Credential proxy pool",
+    "A Credential proxy can be configured without inclusion in a proxy pool",
+    "A Credential proxy pool may include an Active Directory proxy"
+  ],
+  correct: [1],
+  multi: false
+},
+{
+  id: 66,
+  q: "In the Visualization screen, only nodes in the default Taxonomy can be seen. (True / False)",
+  answerText: "False",
+  options: ["True", "False"],
+  correct: [1],
+  multi: false
+},
+{
+  id: 67,
+  q: "Which answer contains only default groups?",
+  answerText: "Unlocker, Discovery, System, Admin, Public",
+  options: [
+    "Admin, Security, Public, Default, System",
+    "Readonly, Public, System, Tideway, Admin",
+    "Security, Discovery, Admin, Public, Tideway",
+    "Unlocker, Discovery, System, Admin, Public"
+  ],
+  correct: [3],
+  multi: false
+},
+{
+  id: 68,
+  q: "The on-prem Discovery System Security requires passwords to be changed when logging in for the first time. To which accounts does this requirement apply?",
+  answerText: "root, tideway, system",
+  options: [
+    "administrator, root, tideway",
+    "root, tideway, system",
+    "system, root, administrator"
+  ],
+  correct: [1],
+  multi: false
+},
+{
+  id: 69,
+  q: "Which is the correct syntax to restart the cluster services from the CLI?",
+  answerText: "sudo systemctl restart cluster",
+  options: [
+    "sudo systemctl --restart cluster",
+    "sudo systemctl cluster --restart",
+    "sudo systemctl cluster restart",
+    "sudo systemctl restart cluster"
+  ],
+  correct: [3],
+  multi: false
+},
+{
+  id: 70,
+  q: "Regarding Discovery Scripts, there is only one set of scripts to support all variants of Linux and Unix. (True / False)",
+  answerText: "False",
+  options: ["True", "False"],
+  correct: [1],
+  multi: false
+},
+{
+  id: 71,
+  q: "From which two locations can you access the REST API? (Select two)",
+  answerText: "Help > Rest API and /swagger/UI",
+  options: [
+    "Administration > Discovery > Rest API",
+    "Help > Rest API",
+    "/swagger/UI",
+    "/Rest_API"
+  ],
+  correct: [1, 2],
+  multi: true
+},
+{
+  id: 72,
+  q: "Choose the answer that accurately lists the order that services should be shut down.",
+  answerText: "Tideway, Corba, Apache, Core",
+  options: [
+    "Tideway, Corba, Apache, Core",
+    "Tideway, Core, Corba, Apache",
+    "Core, Corba, Apache, Tideway",
+    "Tideway, Apache, Corba, Core"
+  ],
+  correct: [0],
+  multi: false
+},
+{
+  id: 73,
+  q: "Which command should be used to restart the Tideway Application Services after uploading a custom report?",
+  answerText: "sudo /sbin/service tideway restart",
+  options: [
+    "sudo /sbin/service reports restart",
+    "sudo /sbin/service search restart",
+    "sudo /sbin/service appliance restart",
+    "sudo /sbin/service tideway restart"
+  ],
+  correct: [3],
+  multi: false
+},
+{
+  id: 74,
+  q: "You have been asked to provide a package of BMC Discovery log files by Customer Support. What is the recommended way to produce this?",
+  answerText: "Gather the relevant files from Administration > Appliance > Appliance Support",
+  options: [
+    "Enable Remote Support in Administration > Support Services to temporarily allow support access to the logs",
+    "Download the relevant files from Administration > Logs > Log Files",
+    "Log in as Root and access the files from the Logs directory",
+    "Gather the relevant files from Administration > Appliance > Appliance Support"
+  ],
+  correct: [3],
+  multi: false
+},
+{
+  id: 75,
+  q: "In which directory is the default taxonomy located?",
+  answerText: "/usr/tideway/data/installed/taxonomy",
+  options: [
+    "/usr/tideway/data/default",
+    "/usr/tideway/taxonomy/installed",
+    "/usr/tideway/lib",
+    "/usr/tideway/data/installed/taxonomy"
+  ],
+  correct: [3],
+  multi: false
+},
+{
+  id: 76,
+  q: "Which statement describes the functionality of the Appliance Baseline mechanism?",
+  answerText: "It monitors the changes to the configuration of a BMC Discovery appliance",
+  options: [
+    "It monitors the success of a discovery access on the target hosts",
+    "It monitors the changes to data in the BMC Discovery datastore",
+    "It monitors the changes to the configuration of a BMC Discovery appliance",
+    "It monitors the changes to credentials deployed on target hosts"
+  ],
+  correct: [2],
+  multi: false
+},
+{
+  id: 77,
+  q: "How do you access the Session Log files?",
+  answerText: "Administration > Appliance > Appliance Support",
+  options: [
+    "Administration > Appliance > Active Sessions",
+    "Administration > Appliance > Miscellaneous",
+    "Administration > Appliance Logs",
+    "Administration > Appliance > Appliance Support"
+  ],
+  correct: [3],
+  multi: false
+},
+{
+  id: 78,
+  q: "Which directory stores the default report files?",
+  answerText: "/usr/tideway/data/installed/reports_content",
+  options: [
+    "usr/tideway/reports/files",
+    "/usr/tideway/data/default/files",
+    "/usr/tideway/data/installed/reports_content",
+    "/usr/tideway/reports/default"
+  ],
+  correct: [2],
+  multi: false
+},
+{
+  id: 79,
+  q: "Which is the correct statement for the appliance snapshot (Backup) utility?",
+  answerText: "It takes a snapshot of the datastore and critical configuration files",
+  options: [
+    "It provides a full server backup",
+    "It takes a snapshot of the datastore and critical configuration files",
+    "It is used to easily create snapshots between appliances having different versions",
+    "It can often be used as an upgrade tool"
+  ],
+  correct: [1],
+  multi: false
+},
+{
+  id: 80,
+  q: "Which is an invalid argument for the tw_service_control command?",
+  answerText: "End",
+  options: ["Status", "Start", "End", "Restart"],
+  correct: [2],
+  multi: false
+},
+{
+  id: 81,
+  q: "Which directory contains UNIX discovery data that can be used for diagnostics?",
+  answerText: "Record",
+  options: ["Record", "Snapshot", "Data", "Etc"],
+  correct: [0],
+  multi: false
+},
+
+/* ===============================
+   APPLICATION MODELING / TPL / CAM
+   Quellen: turn11search31, turn13search32
+=============================== */
+
+{
+  id: 101,
+  q: "What is the name of the attribute that allows you to display a new SI attribute in the Discovery interface?",
+  answerText: "model.addDisplayAttribute",
+  options: [
+    "model.addDisplayAttribute",
+    "model.DisplayAttribute",
+    "model.attributeUpdate",
+    "model.AddAttribute"
+  ],
+  correct: [0],
+  multi: false
+},
+{
+  id: 102,
+  q: "Which DDD do SoftwareInstance patterns typically trigger on?",
+  answerText: "a 'DiscoveredProcess' node",
+  options: [
+    "a 'DiscoveredProcess' node",
+    "a 'Package' node",
+    "a 'Detail' node",
+    "a 'Process' node",
+    "a 'Host' node"
+  ],
+  correct: [0],
+  multi: false
+},
+{
+  id: 103,
+  q: "A pattern has the trigger condition: where cmd matches windows_cmd \"Mcshield\". Which option represents how the \"windows_cmd\" prefix modifies the string: \"Mcshield\"?",
+  answerText: "\"(?i)\\bMcshield\\.exe$\"",
+  options: [
+    "raw \"(?i)Mcshield\\.exe$\"",
+    "\"(?i)\\bMcshield\\.exe$\"",
+    "\"\\bMcshield.exe$\"",
+    "regex \"Mcshield\\.exe$\""
+  ],
+  correct: [1],
+  multi: false
+},
+{
+  id: 104,
+  q: "The cmd attribute for a process contains: /usr/local/apps/appserver_54 -x -v. You are required to extract the version number as two digits separated by a '.'. Which is the correct syntax for extracting this data?",
+  answerText: "version := regex.extract(process.cmd, regex 'appserver_(\\d)(\\d+)', raw '\\1.\\2');",
+  options: [
+    "version := regex.extract(process.cmd, regex 'appserver_(\\d)(\\d+)', raw '\\1.\\2');",
+    "version := regex.extract(process.cmd, regex 'appServer_(\\d)(\\d+)', raw '\\1.\\2');",
+    "version := regex.extract(process.cmd, regex 'appserver_(\\d)(\\d+)', raw '/1./2');",
+    "version := regex.extract(process.cmd, regex 'appserver_(\\d+)', raw '1.2');"
+  ],
+  correct: [0],
+  multi: false
+},
+{
+  id: 105,
+  q: "Identify the correct statement that describes the product_version attribute.",
+  answerText: "It should represent the version of a program as it appears when marketed by the publisher",
+  options: [
+    "It should be exactly the same as the Full Version",
+    "It should be inferred from the Edition",
+    "It should represent the version of a program as it appears when marketed by the publisher",
+    "It should represent the major and minor version of a program"
+  ],
+  correct: [2],
+  multi: false
+},
+{
+  id: 106,
+  q: "User-defined function is used for all options except:",
+  answerText: "When declared in a pattern and referenced within another pattern in the same module",
+  options: [
+    "When attempted to define outside of the definitions section in a pattern",
+    "When declared in a pattern and referenced in another section within that pattern",
+    "When declared in a pattern and referenced within another pattern in the same module",
+    "When declared in a module and referenced from another module"
+  ],
+  correct: [2],
+  multi: false
+},
+{
+  id: 107,
+  q: "Identify the correct statement for table functions in patterns.",
+  answerText: "Tables must be defined in the module, not in a pattern",
+  options: [
+    "Tables must be defined in the module, not in a pattern",
+    "A table must be constructed at runtime",
+    "A table cannot be empty on creation",
+    "TPL does not support tables in patterns"
+  ],
+  correct: [0],
+  multi: false
+},
+{
+  id: 108,
+  q: "Which is the correct syntax for creating a one to one host containment relationship?",
+  answerText: "host_in_cluster_rel := model.uniquerel.HostContainment(ContainedHost := host, HostContainer := cluster_node);",
+  options: [
+    "host_in_cluster_rel := model.uniquerel.HostContainment(ContainedHost := host, HostContainer := cluster_node);",
+    "host_in_cluster_rel := model.rel.unique(ContainedHost := host, HostContainer := cluster_node);",
+    "host_in_cluster_rel := model.contained.unique(ContainedHost := host, HostContainer := cluster_node);",
+    "host_in_cluster_rel := model.Containment.unique(ContainedHost := host, HostContainer := cluster_node);"
+  ],
+  correct: [0],
+  multi: false
+},
+{
+  id: 109,
+  q: "Which trigger will correctly compile in BMC Discovery?",
+  answerText: "on bea_pr := DiscoveredProcess where cmd matches windows_cmd \"weblogic\";",
+  options: [
+    "on bea_pr := DiscoveredProcess where cmd matches windows_cmd \"weblogic\";",
+    "on trigger bea_pr := DiscoveredProcess where cmd matches windows_cmd \"weblogic\";",
+    "on bea_pr := DiscoveredProcess where cmd matches windows_cmd weblogic;",
+    "on bea_pr := DiscoveredProcess where cmd matches windows_command \"weblogic\";"
+  ],
+  correct: [0],
+  multi: false
+},
+{
+  id: 110,
+  q: "Which section of a typical TPL pattern lets you define \"type\" (for example, type := \"Oracle Database Server\")?",
+  answerText: "Constants section",
+  options: ["Tags section", "Constants section", "Identify section", "Overview section"],
+  correct: [1],
+  multi: false
+},
+{
+  id: 111,
+  q: "Which option is used to indicate that a line in a TPL pattern is a comment?",
+  answerText: "//",
+  options: [":", "\"\"", "//", "%"],
+  correct: [2],
+  multi: false
+},
+{
+  id: 112,
+  q: "Which pattern code changes may suggest a need to make a major version increment?",
+  answerText: "SI Key made more specific",
+  options: [
+    "SI Key made more specific",
+    "Enhancement to add product edition information (additional SI attribute)",
+    "Bug fix affecting the trigger condition",
+    "Adding a new product versioning method"
+  ],
+  correct: [0],
+  multi: false
+},
+{
+  id: 113,
+  q: "Which function would update a SoftwareInstance node?",
+  answerText: "model.SoftwareInstance(arguments)",
+  options: [
+    "model.update(SoftwareInstance)",
+    "model.SoftwareInstance(update)",
+    "model.SoftwareInstance(arguments).update",
+    "model.SoftwareInstance(arguments)"
+  ],
+  correct: [3],
+  multi: false
+},
+{
+  id: 114,
+  q: "Which set indicates the mandatory sections within each pattern block of a pattern module?",
+  answerText: "Pattern Description, Overview, Pattern Body, and Triggers",
+  options: [
+    "Overview, Constants, Pattern Body, and Triggers",
+    "Pattern Metadata, Overview, Pattern Body, and Triggers",
+    "Pattern Description, Overview, Pattern Body, and Triggers",
+    "Pattern Description, Pattern Metadata, Overview, and Constants"
+  ],
+  correct: [2],
+  multi: false
+},
+{
+  id: 115,
+  q: "In which section of a TPL pattern do you define tags?",
+  answerText: "Overview section",
+  options: ["Tags section", "Overview section", "Metadata section", "Constants section"],
+  correct: [1],
+  multi: false
+},
+{
+  id: 116,
+  q: "Which expression indicates how to test equality within patterns?",
+  answerText: "if a = b then",
+  options: ["if a := b then", "if a = b then", "if a.equals(b) then", "if a == b then"],
+  correct: [1],
+  multi: false
+},
+{
+  id: 117,
+  q: "Which declaration should you use to create a \"LookupOS\" in TPL table?",
+  answerText: "LookupOS := table();",
+  options: [
+    "LookupOS := table();",
+    "LookupOS := define table();",
+    "LookupOS := new table();",
+    "LookupOS := create table;"
+  ],
+  correct: [0],
+  multi: false
+},
+{
+  id: 118,
+  q: "Which is the default trigger condition in patterns if no condition is specified in the triggers section?",
+  answerText: "Created",
+  options: ["Confirmed", "Modified", "Created", "Destroyed"],
+  correct: [2],
+  multi: false
+},
+{
+  id: 119,
+  q: "Which function type do you use to represent a many-to-many relationship for the relationship kind X?",
+  answerText: "model.rel.X(...)",
+  options: [
+    "model.rel.X(...)",
+    "model.multirel.X(...)",
+    "model.onlyrel.X(...)",
+    "model.uniquerel.X(...)"
+  ],
+  correct: [0],
+  multi: false
+},
+{
+  id: 120,
+  q: "Which is a correct statement for the discovery.runCommand() function?",
+  answerText: "It returns a DiscoveredCommandResult node",
+  options: [
+    "It returns a DiscoveredCommandResult node",
+    "It returns a DiscoveredCommand node",
+    "It returns a CommandResult node",
+    "It returns a DiscoveredRunCommand node"
+  ],
+  correct: [0],
+  multi: false
+},
+{
+  id: 121,
+  q: "Which is an invalid change kind that can be used in a TPL pattern trigger condition?",
+  answerText: "Discovered",
+  options: ["Modified", "Created", "Confirmed", "Discovered"],
+  correct: [3],
+  multi: false
+},
+{
+  id: 122,
+  q: "Which three are limitations to a trigger statement? (Select three)",
+  answerText: "Can only contain attributes of a single node; Cannot contain a traversal; Cannot contain a function",
+  options: [
+    "Can only contain attributes of a single node",
+    "Cannot contain a traversal",
+    "Cannot contain a function",
+    "Cannot trigger on a relationship",
+    "Cannot contain a where clause"
+  ],
+  correct: [0, 1, 2],
+  multi: true
+},
+{
+  id: 123,
+  q: "Which operator is used for Concatenation?",
+  answerText: "+",
+  options: ["AND", "OR", "+", "\"\""],
+  correct: [2],
+  multi: false
+},
+{
+  id: 124,
+  q: "The element ':=' is used to:",
+  answerText: "Set a variable",
+  options: ["Add comments", "Set a variable", "End a statement or a section", "Protect strings"],
+  correct: [1],
+  multi: false
+},
+{
+  id: 125,
+  q: "Which function removes the specified node from the datastore?",
+  answerText: "model.destroy()",
+  options: ["model.destroy()", "model.delete()", "model.withdraw()", "model.remove()"],
+  correct: [0],
+  multi: false
+},
+{
+  id: 126,
+  q: "Which component within the pattern does not have a start and an end?",
+  answerText: "TPL declaration section",
+  options: ["TPL declaration section", "Triggers sections", "Constants section", "Body section"],
+  correct: [0],
+  multi: false
+},
+{
+  id: 127,
+  q: "When matching the version of a Software instance, the version may be presented as V, Vers, or Version and the version number as 2 single digits separated by a . (period). Which regular expressions will match any of these occurrences?",
+  answerText: "(?i)(?:V|Vers|Version)\\s+([\\d\\.]+)",
+  options: [
+    "(?i)(?:V|Vers|Version)\\s+([\\d\\.]+)",
+    "(?i)(?:V+Vers+Version)\\s+([\\d\\.]+)",
+    "(?i)?:V|Vers|Version\\s+([\\d\\.]+)",
+    "(?i)(?:V|Vers|Version)\\s+(\\d.+)"
+  ],
+  correct: [0],
+  multi: false
+},
+{
+  id: 128,
+  q: "By default, how often are patterns updated through Technology Knowledge Updates (TKUs)?",
+  answerText: "Monthly",
+  options: ["Weekly", "Monthly", "Quarterly", "Annually"],
+  correct: [1],
+  multi: false
+},
+{
+  id: 129,
+  q: "Which is the correct file type to create or add your own pattern module?",
+  answerText: ".tpl",
+  options: [".tpl", ".tku", ".tgz", ".pkg"],
+  correct: [0],
+  multi: false
+},
+{
+  id: 130,
+  q: "Which three are considered best practices for developing patterns? (Select three)",
+  answerText: "Create meaningful module names at appropriate points in the hierarchy; Use meaningful TPL variable names; Set attributes for which you tried but failed to get data, such as version or product_version",
+  options: [
+    "Create meaningful module names at appropriate points in the hierarchy",
+    "Use meaningful TPL variable names",
+    "Always hard code host names, instances, and any other data",
+    "Set attributes for which you tried but failed to get data, such as version or product_version"
+  ],
+  correct: [0, 1, 3],
+  multi: true
+},
+{
+  id: 131,
+  q: "Regular expressions (regexes) serve which of two purposes? (Select two)",
+  answerText: "They can associate TPL rules with events; They can filter out sensitive information from command lines",
+  options: [
+    "They can associate TPL rules with events",
+    "They can filter out sensitive information from command lines",
+    "They can process information only in the headings of a TPL pattern",
+    "They can associate TPL rules with specific nodes"
+  ],
+  correct: [0, 1],
+  multi: true
+},
+{
+  id: 132,
+  q: "Which three options are matched by the regular expression \"area 5[12345a]\"? (Choose three.)",
+  answerText: "\"area 55\", \"area 5a\", \"area 52\"",
+  options: ["\"area 23\"", "\"area 55\"", "\"area 5a\"", "\"area 52\""],
+  correct: [1, 2, 3],
+  multi: true
+},
+{
+  id: 133,
+  q: "Which three are a correct description of regular expression abbreviations? (Select three)",
+  answerText: "\\w matches any character in ranges 0-9, A-Z, a-z; \\s matches any whitespace character; \\d matches any character in range 0-9",
+  options: [
+    ". matches any character",
+    "\\w matches any character in ranges: 0-9, A-Z, a-z",
+    "\\s matches any whitespace character",
+    "\\d matches any character in range 0-9"
+  ],
+  correct: [1, 2, 3],
+  multi: true
+},
+{
+  id: 134,
+  q: "How are Candidate software instances identified?",
+  answerText: "Processes not identified by patterns",
+  options: [
+    "Processes not identified by patterns",
+    "Processes identified by patterns",
+    "Processes not identified by modelling",
+    "Processes identified by modeling"
+  ],
+  correct: [0],
+  multi: false
+},
+{
+  id: 135,
+  q: "Which three statements are correct? (Select three)",
+  answerText: "You can create multiple user-defined functions within the definitions block; You can specify a default value for function parameters; A user-defined function can be referenced from another module",
+  options: [
+    "You can create multiple user-defined functions within the definitions block",
+    "You can specify a default value for function parameters",
+    "You cannot create multiple user-defined functions in the definitions block",
+    "A user-defined function can be referenced from another module"
+  ],
+  correct: [0, 1, 3],
+  multi: true
+},
+{
+  id: 136,
+  q: "Which view must you have selected in order to Model an Application using Start Anywhere Application Mapping?",
+  answerText: "Software Connected",
+  options: ["Software Connected", "Software Infrastructure", "Software", "Software Relationships"],
+  correct: [0],
+  multi: false
+},
+{
+  id: 137,
+  q: "Which name is preferred as seed data to investigate an application map in Collaborative Application Mapping?",
+  answerText: "The application name",
+  options: ["The appliance name", "A host name", "A database name", "The application name"],
+  correct: [3],
+  multi: false
+},
+{
+  id: 138,
+  q: "Which three are the stages in Collaborative Application Mapping? (Select three)",
+  answerText: "Search using seed data; Share the prototype with the application owner; Populate the functional components",
+  options: [
+    "Search using seed data",
+    "Write the TPL and run the pattern",
+    "Share the prototype with the application owner",
+    "Populate the functional components",
+    "Create a Model Definition"
+  ],
+  correct: [0, 2, 3],
+  multi: true
+},
+{
+  id: 139,
+  q: "You need to discover detailed configuration information about unscanned Oracle databases. You determine that this data can be discovered by running a query against each database. Which item will you configure?",
+  answerText: "Data Source",
+  options: ["Discovery Script", "Data Source", "Integration Point", "CSV Import Parameters"],
+  correct: [1],
+  multi: false
+},
+{
+  id: 140,
+  q: "What does the term 'Data Source' mean as applied to Discovery?",
+  answerText: "Used to access information held in centralized shared data stores",
+  options: [
+    "Used to access information held in centralized shared data stores",
+    "The Ciscoworks connection parameters",
+    "The connection information for a data export from Discovery",
+    "The CMDB connection parameters"
+  ],
+  correct: [0],
+  multi: false
+},
+{
+  id: 141,
+  q: "Which WHERE statement predicate indicates \"does not match\"?",
+  answerText: "NOT",
+  options: ["=", "NOT", "()", "<>"],
+  correct: [1],
+  multi: false
+},
+{
+  id: 142,
+  q: "What is the default setting for synchronizing root nodes to CMDB?",
+  answerText: "All root nodes are synchronised",
+  options: [
+    "All root nodes are synchronised",
+    "No root nodes are synchronised",
+    "Only those root nodes that meet certain criteria are synchronised",
+    "Only Host nodes are synchronised"
+  ],
+  correct: [0],
+  multi: false
+},
+{
+  id: 143,
+  q: "Which is the function of model.withdraw?",
+  answerText: "Removes the specified attribute from the node",
+  options: [
+    "Removes the specified attribute from the node",
+    "Removes a Node from a Business Application Instance",
+    "Removes a Node from the datastore",
+    "Unpublishes a model created by SAAM"
+  ],
+  correct: [0],
+  multi: false
+},
+{
+  id: 144,
+  q: "Which three statements are correct in regard to Collaborative Application Mapping (CAM)? (Select three)",
+  answerText: "You can begin the process with very little seed data; You can send interim findings to the application owner without sharing appliance credentials; You do not need to write TPL in the entire process",
+  options: [
+    "You can begin the process with very little seed data",
+    "You can send interim findings to the application owner without sharing appliance credentials",
+    "You do not need to define functional components to map the application",
+    "You do not need to write TPL in the entire process",
+    "Removal of a node from the manual group the model is based on will automatically update the model"
+  ],
+  correct: [0, 1, 3],
+  multi: true
+},
+{
+  id: 145,
+  q: "A \"named value\" is an application mapper's way to assign a unique _________?",
+  answerText: "name for a functional component",
+  options: [
+    "name for a functional component",
+    "alias to a non-functional component",
+    "numeric identifier to a non-functional component",
+    "name to any functional or non-functional component"
+  ],
+  correct: [0],
+  multi: false
+},
+{
+  id: 146,
+  q: "You have created a node map using SAAM. The node map will be updated when new nodes that match a template will be:",
+  answerText: "Discovered",
+  options: ["Discovered", "Recognized", "Tracked", "Scanned"],
+  correct: [0],
+  multi: false
+},
+{
+  id: 147,
+  q: "Which are typically the components of a three-tier application?",
+  answerText: "Network Tier, Business Tier, and Database Tier",
+  options: [
+    "Web Tier, Middle Tier, and Database Tier",
+    "Network Tier, Business Tier, and Database Tier",
+    "Web Tier, Middle Tier, and Datastore Tier",
+    "Business Tier, Middle Tier, and Datastore Tier"
+  ],
+  correct: [1],
+  multi: false
+},
+{
+  id: 148,
+  q: "A simple way to understand an application structure is to draw the application with its _________",
+  answerText: "Dependencies",
+  options: ["Networks", "Dependencies", "Pre-requisites", "Updates"],
+  correct: [1],
+  multi: false
+},
+{
+  id: 149,
+  q: "CAM is a ______ process to identify the hardware and software supporting business applications.",
+  answerText: "Collaborative",
+  options: ["Collaborative", "Iterative", "Supporting", "Repetitive"],
+  correct: [0],
+  multi: false
+},
+{
+  id: 150,
+  q: "Which two methods of Synchronizing discovery data to CMDB? (Select two)",
+  answerText: "Continuous Sync, AD-HOC sync",
+  options: ["Continuous Sync", "Incremental Sync", "AD-HOC sync", "Discovery Sync"],
+  correct: [0, 2],
+  multi: true
+},
+{
+  id: 151,
+  q: "You need to augment the discovered host data with the ownership and location data held in a scanned asset management system. You decide to run an SQL query against the asset management system each time a host is discovered. What will you need to configure?",
+  answerText: "SQL Credential",
+  options: ["Discovery Script", "CSV Import Parameters", "SQL Credential", "Database Credential Group"],
+  correct: [2],
+  multi: false
+},
+{
+  id: 152,
+  q: "Which key expression returns a set of attributes?",
+  answerText: "#role:rel:role:kind.attr",
+  options: ["#role:rel:role:kind.attr", "#role:rel:role:kind", "#role:rel", "#role:rel.attr"],
+  correct: [0],
+  multi: false
+},
+{
+  id: 153,
+  q: "Which key expression returns a value of an attribute?",
+  answerText: "#role:rel:role:kind.attr",
+  options: ["#role:rel:role:kind.attr", "#role:rel:role:kind.*", "#role:rel.attr", "#role:rel.attr"],
+  correct: [0],
+  multi: false
+},
+{
+  id: 154,
+  q: "Which two functional components are used in combination? (Select two)",
+  answerText: "Software Instance; Database details",
+  options: [
+    "Software Instance",
+    "Database details",
+    "Business Application Instances",
+    "Datastores",
+    "Host node"
+  ],
+  correct: [0, 1],
+  multi: true
+},
+{
+  id: 155,
+  q: "Which is a physical component that handles communication between applications?",
+  answerText: "Message Broker",
+  options: ["Application Owner", "Application Mapper", "Message Broker", "Functional Component"],
+  correct: [2],
+  multi: false
+},
+{
+  id: 156,
+  q: "Which of the following statements are correct? (Select three)",
+  answerText: "BAI nodes are created by patterns; BAI nodes are maintained by patterns; BAI nodes are destroyed by patterns",
+  options: [
+    "BAI (Business Application Instance) nodes are created by patterns.",
+    "BAI (Business Application Instance) nodes are maintained by patterns.",
+    "BAI (Business Application Instance) nodes are destroyed by patterns.",
+    "BAI (Business Application Instance) nodes are utilized by patterns."
+  ],
+  correct: [0, 1, 2],
+  multi: true
+},
+{
+  id: 157,
+  q: "Which does the following regular expression '[^ /]+.+?' mean?",
+  answerText: "Match until a space or forward slash character is reached, then skip it and match at least one more character",
+  options: [
+    "Match until a space or forward slash character is reached, then match at least one more character",
+    "Match until a space or forward slash character is reached, then skip it and continue matching other characters",
+    "Do not match if there is a space or forward slash character within the text being examined",
+    "Match until a space or forward slash character is reached, then skip it and match at least one more character"
+  ],
+  correct: [3],
+  multi: false
+},
+{
+  id: 158,
+  q: "Which option will match with the regular expression: '^[\\W\\d]{3}'?",
+  answerText: "Any non-alphabetic character where the target string has three characters and where the first character is anchored to the start of the target string",
+  options: [
+    "Any non-alphabetic character three times",
+    "Any alphanumeric character that has the number 3 in the string",
+    "Any non-alphabetic character where the target string has three characters and where the first character is anchored to the start of the target string",
+    "Any non-alphanumeric number where the first character is anchored to the start of the target string"
+  ],
+  correct: [2],
+  multi: false
+},
+{
+  id: 159,
+  q: "You need to create a key for a Software Instance. What do you do if you can determine the SI's version but not a unique instance?",
+  answerText: "Set the key_group to the SI's version",
+  options: [
+    "Recreate the instance",
+    "Set the key_group to the SI's version",
+    "Set a unique key",
+    "Update the existing instance by setting a new key"
+  ],
+  correct: [1],
+  multi: false
+},
+{
+  id: 160,
+  q: "Which component within the pattern does not have a start and an end?",
+  answerText: "TPL declaration section",
+  options: ["TPL declaration section", "Triggers sections", "Constants section", "Body section"],
+  correct: [0],
+  multi: false
+},
+{
+  id: 161,
+  q: "Which three are wild cards that can be used in Regular Expressions? (Select three)",
+  answerText: "?, *, +",
+  options: ["?", "*", "+", "\\", "&"],
+  correct: [0, 1, 2],
+  multi: true
+},
+{
+  id: 162,
+  q: "What is the correct sequence of sections in a pattern?",
+  answerText: "Declaration, Overview, Trigger, Body",
+  options: [
+    "Declaration, Overview, Trigger, Body",
+    "Metadata, Overview, Constants, Trigger",
+    "Overview, Constants, Trigger, Body",
+    "Declaration, Metadata, Trigger, Body"
+  ],
+  correct: [0],
+  multi: false
+},
+{
+  id: 163,
+  q: "You are troubleshooting a pattern and are validating a search within the pattern. Which is the correct search statement?",
+  answerText: "search(softwareinstance where instance = \"%instance%\");",
+  options: [
+    "search(SoftwareInstance where instance = \"%instance%\");",
+    "Search for SoftwareInstance where instance = \"%instance%\";",
+    "search(softwareinstance where instance = \"%instance%\");",
+    "(search SoftwareInstance where instance = \"%instance%\");"
+  ],
+  correct: [2],
+  multi: false
+},
+{
+  id: 164,
+  q: "In TPL, where are static or dynamic tables defined?",
+  answerText: "Module",
+  options: ["Pattern", "Module", "Both pattern and module", "Not defined"],
+  correct: [1],
+  multi: false
+},
+{
+  id: 165,
+  q: "What is the name of the attribute that allows you to display a new SI attribute in the Discovery interface?",
+  answerText: "_tw_meta_data_attrs",
+  options: ["_tw_meta_data_attrs", "_tw_disp_attr", "tw_meta_data_disp", "tw_meta_data_attry"],
+  correct: [0],
+  multi: false
+},
+{
+  id: 166,
+  q: "What does it mean when the keywords 'regex' and 'raw' are used in front of a quoted string?",
+  answerText: "They tell the TPL compiler how to interpret the string",
+  options: [
+    "They tell the TPL compiler how to interpret the string",
+    "They denote platform functions",
+    "They denote user functions",
+    "They are for documentation purposes"
+  ],
+  correct: [0],
+  multi: false
+},
+{
+  id: 167,
+  q: "After generating TPL, when using CAM, what is used and maintained in BMC Discovery?",
+  answerText: "Application model",
+  options: ["Application model", "FCD map", "CAM map", "TPL map"],
+  correct: [0],
+  multi: false
+},
+{
+  id: 168,
+  q: "Which two methods allow you to start application modelling from anywhere that is interesting in the context of the application you are modelling? (Select two)",
+  answerText: "Using Search box; Clicking Model",
+  options: [
+    "Using Search box",
+    "Using Explore Query option",
+    "Clicking Model",
+    "Clicking Create New Application Model"
+  ],
+  correct: [0, 2],
+  multi: true
+},
+{
+  id: 169,
+  q: "Which two could Application Mapping be integrated with? (Select two)",
+  answerText: "Change Management; Configuration Management",
+  options: [
+    "Change Management",
+    "Configuration Management",
+    "Integration Management",
+    "Scope Management",
+    "Dependency Management"
+  ],
+  correct: [0, 1],
+  multi: true
+},
+{
+  id: 170,
+  q: "Which three are model functions in BMC Discovery? (Select three)",
+  answerText: "model.hosts(); model.findPackages(); model.SoftwareInstance()",
+  options: [
+    "model.remove()",
+    "model.hosts()",
+    "model.findPackages()",
+    "model.SoftwareInstance()"
+  ],
+  correct: [1, 2, 3],
+  multi: true
+},
+{
+  id: 171,
+  q: "Which three are events that could cause a trigger? (Select three)",
+  answerText: "Creation of a Node; Modification of a Node; Deletion of a Node",
+  options: [
+    "Failure of a Node to update",
+    "Creation of a Node",
+    "Modification of a Node",
+    "Deletion of a Node"
+  ],
+  correct: [1, 2, 3],
+  multi: true
+},
+{
+  id: 172,
+  q: "When saving a visualization which type of object is created?",
+  answerText: "Application Model",
+  options: ["Model Definition", "Function Component", "Application Model", "Visualization Definition"],
+  correct: [2],
+  multi: false
+}
+
+];
+
 document.getElementById('poolCount').textContent = questionPool.length;
-document.getElementById('multiCount').textContent = bulletMultiCount;
 function loadMap(k){return JSON.parse(localStorage.getItem(k)||'{}')}
 function saveMap(k,v){localStorage.setItem(k, JSON.stringify(v))}
+function loadSettings(){ const s = JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}'); document.getElementById('roundSizeSelect').value = String(s.roundSize || 25); updateRoundDisplay(); }
+function saveSettings(){ const s = { roundSize: Number(document.getElementById('roundSizeSelect').value) || 25 }; localStorage.setItem(SETTINGS_KEY, JSON.stringify(s)); }
+document.getElementById('roundSizeSelect').addEventListener('change', ()=>{saveSettings(); updateRoundDisplay();})
+function updateRoundDisplay(){ const size = document.getElementById('roundSizeSelect').value; document.getElementById('questionsPerRoundValue').textContent = size === '9999' ? 'Alle' : size; }
 function shuffle(a){const b=[...a]; for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [b[i],b[j]]=[b[j],b[i]];} return b;}
-function updateProgress(){const mastered=loadMap(STORAGE_KEY); const total=questionPool.length; const count=Object.keys(mastered).length; const pct=Math.round((count/total)*100); document.getElementById('progressBar').style.width=pct+'%'; document.getElementById('progressText').textContent=`${pct}% (${count}/${total} mastered)`; document.getElementById('modeText').textContent=focusMode?'Focus Mode':'Normal Mode';}
-function renderQuiz(){ const form=document.getElementById('quizForm'); form.innerHTML=''; activeQuestions.forEach((item,idx)=>{ const sec=document.createElement('section'); sec.className='card quiz-card'; sec.setAttribute('data-id', item.id); const type=item.multi?'checkbox':'radio'; const hint=item.multi?`Select ${item.correct.length} answers.`:'Select 1 answer.'; const opts=item.options.map((opt,i)=>`<label class="opt"><input type="${type}" name="q${idx}${item.multi?'[]':''}" value="${i}"><span>${opt}</span></label>`).join(''); sec.innerHTML=`<div class="question-header"><h3>${idx+1}. ${item.q}</h3><span class="badge">${item.multi?'Bullet-based multi-select':'Single choice'}</span></div><p class="small">${hint}</p><div class="options">${opts}</div><div id="fb_${idx}" class="feedback"></div>`; form.appendChild(sec); }); document.getElementById('resultBox').style.display='none'; document.getElementById('resultBox').innerHTML=''; window.scrollTo({top:0,behavior:'smooth'}); }
-function getSelected(idx,multi){ if(multi) return Array.from(document.querySelectorAll(`input[name="q${idx}[]"]:checked`)).map(el=>Number(el.value)).sort((a,b)=>a-b); const s=document.querySelector(`input[name="q${idx}"]:checked`); return s?[Number(s.value)]:[]; }
+function trapWeight(q){ const txt = (q.q + ' ' + (q.options||[]).join(' ')).toLowerCase(); const keywords = ['regex','tpl','pattern','query','show as','traverse','expand','processwith','_last_marker','credential','vault','cluster','coordinator','port','wmi','path','keyboard','report','taxonomy']; let score = 1; for(const k of keywords) if(txt.includes(k)) score += 2; if(q.multi) score += 1.5; return score; }
+function weightedSample(pool, n){ const remain = [...pool]; const result = []; while(remain.length && result.length < n){ const weights = remain.map(q => trapWeight(q)); const sum = weights.reduce((a,b)=>a+b,0); let r = Math.random()*sum, idx = 0; for(let i=0;i<remain.length;i++){ r -= weights[i]; if(r<=0){ idx=i; break; } } result.push(remain.splice(idx,1)[0]); } return result; }
+function updateProgress(){ const mastered = loadMap(STORAGE_KEY); const total = questionPool.length; const count = Object.keys(mastered).length; const pct = total ? Math.round((count/total)*100) : 0; document.getElementById('progressBar').style.width = pct+'%'; document.getElementById('progressText').textContent = `${pct}% (${count}/${total} mastered)`; document.getElementById('modeText').textContent = focusMode ? 'Focus Mode' : 'Normal Mode'; }
+function renderQuiz(questions = activeQuestions) {
+  const form = document.getElementById('quizForm');
+  form.innerHTML = '';
+
+  questions.forEach((item, idx) => {
+    const sec = document.createElement('section');
+    sec.className = 'card quiz-card';
+    sec.setAttribute('data-id', item.id);
+
+    const type = item.multi ? 'checkbox' : 'radio';
+    const hint = item.multi
+      ? `Select ${item.correct.length} answers.`
+      : 'Select 1 answer.';
+
+    const opts = item.options.map((opt, i) => `
+      <label class="opt">
+        <input type="${type}" name="q${idx}${item.multi ? '[]' : ''}" value="${i}">
+        <span>${opt}</span>
+      </label>
+    `).join('');
+
+    sec.innerHTML = `
+      <div class="question-header">
+        <h3>${idx + 1}. ${item.q}</h3>
+        <span class="badge">${item.multi ? 'Multi-select' : 'Single choice'}</span>
+      </div>
+      <p class="small">${hint}</p>
+      <div class="options">${opts}</div>
+      <div id="fb_${idx}" class="feedback"></div>
+    `;
+
+    form.appendChild(sec);
+  });
+
+  // ✅ WICHTIG: Toggle zurücksetzen bei neuer Runde
+  answersVisible = false;
+  const btn = document.getElementById('toggleBtn');
+  if (btn) {
+    btn.textContent = '👀 Show correct answers';
+  }
+
+  // Optional: Ergebnisse verstecken
+  const resultBox = document.getElementById('resultBox');
+  if (resultBox) {
+    resultBox.style.display = 'none';
+    resultBox.innerHTML = '';
+  }
+
+  // Optional: nach oben scrollen
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function getSelected(idx, multi){ if(multi) return Array.from(document.querySelectorAll(`input[name="q${idx}[]"]:checked`)).map(el=>Number(el.value)).sort((a,b)=>a-b); const s = document.querySelector(`input[name="q${idx}"]:checked`); return s ? [Number(s.value)] : []; }
 function sameSet(a,b){ if(a.length!==b.length) return false; for(let i=0;i<a.length;i++) if(a[i]!==b[i]) return false; return true; }
-function submitAndScore(){ const mastered=loadMap(STORAGE_KEY), wrong=loadMap(WRONG_KEY); let correctCount=0, wrongCount=0, unanswered=0; activeQuestions.forEach((item,idx)=>{ const selected=getSelected(idx,item.multi); const correct=[...item.correct].sort((a,b)=>a-b); const fb=document.getElementById(`fb_${idx}`); const selectedText=selected.map(i=>item.options[i]).join('; ') || 'No answer selected'; const correctText=correct.map(i=>item.options[i]).join('; '); if(selected.length===0){ unanswered++; wrong[item.id]=true; delete mastered[item.id]; fb.className='feedback incorrect'; fb.style.display='block'; fb.innerHTML=`❌ No answer selected.<br><strong>Correct answer:</strong> ${correctText}<br><div class="small"><strong>Source answer:</strong> ${item.answerText}</div>`; return; } const ok=sameSet(selected,correct); if(ok){ correctCount++; mastered[item.id]=true; delete wrong[item.id]; fb.className='feedback correct'; fb.style.display='block'; fb.innerHTML=`✅ Correct.<br><strong>Answer:</strong> ${correctText}<br><div class="small"><strong>Source answer:</strong> ${item.answerText}</div>`; } else { wrongCount++; wrong[item.id]=true; delete mastered[item.id]; fb.className='feedback incorrect'; fb.style.display='block'; fb.innerHTML=`❌ Your answer: ${selectedText}<br><strong>Correct answer:</strong> ${correctText}<br><div class="small"><strong>Source answer:</strong> ${item.answerText}</div>`; } }); saveMap(STORAGE_KEY, mastered); saveMap(WRONG_KEY, wrong); updateProgress(); const total=activeQuestions.length; const pct=Math.round((correctCount/total)*100); const rb=document.getElementById('resultBox'); rb.style.display='block'; rb.innerHTML=`<h2 style="margin:0 0 8px;">Session result: ${correctCount} / ${total} (${pct}%)</h2><p><strong>Correct:</strong> ${correctCount}</p><p><strong>Wrong:</strong> ${wrongCount}</p><p><strong>Unanswered:</strong> ${unanswered}</p><p class="small">The overall progress bar above was updated after scoring.</p>`; rb.scrollIntoView({behavior:'smooth', block:'start'}); }
-function newQuiz(){ const mastered=loadMap(STORAGE_KEY), wrong=loadMap(WRONG_KEY); let pool=focusMode ? questionPool.filter(q=>wrong[q.id]) : questionPool.filter(q=>!mastered[q.id]); if(focusMode && pool.length===0){ focusMode=false; updateProgress(); pool=questionPool.filter(q=>!mastered[q.id]); } if(pool.length===0){ const rb=document.getElementById('resultBox'); rb.style.display='block'; rb.innerHTML='<h2 style="margin:0 0 8px;">🎉 Everything mastered</h2><p>All questions are currently mastered. Use Reset Progress to start over.</p>'; document.getElementById('quizForm').innerHTML=''; activeQuestions=[]; updateProgress(); return; } activeQuestions=shuffle(pool).slice(0, Math.min(QUESTION_COUNT,pool.length)); renderQuiz(); updateProgress(); }
+function submitAndScore(){ const mastered=loadMap(STORAGE_KEY), wrong=loadMap(WRONG_KEY); let correctCount=0, wrongCount=0, unanswered=0; const wrongItems = []; activeQuestions.forEach((item, idx) => { const selected = getSelected(idx, item.multi); const correct = [...item.correct].sort((a,b)=>a-b); const fb = document.getElementById(`fb_${idx}`); const selectedText = selected.map(i=>item.options[i]).join('; ') || 'No answer selected'; const correctText = correct.map(i=>item.options[i]).join('; '); const ok = sameSet(selected, correct); if(selected.length===0){ unanswered++; wrong[item.id]=true; delete mastered[item.id]; wrongItems.push(item); fb.className='feedback incorrect'; fb.style.display='block'; fb.innerHTML=`❌ No answer selected.<br><strong>Correct answer:</strong> ${correctText}`; return; } if(ok){ correctCount++; mastered[item.id]=true; delete wrong[item.id]; fb.className='feedback correct'; fb.style.display='block'; fb.innerHTML=`✅ Correct.<br><strong>Answer:</strong> ${correctText}`; } else { wrongCount++; wrong[item.id]=true; delete mastered[item.id]; wrongItems.push(item); fb.className='feedback incorrect'; fb.style.display='block'; fb.innerHTML=`❌ Your answer: ${selectedText}<br><strong>Correct answer:</strong> ${correctText}`; } }); saveMap(STORAGE_KEY, mastered); saveMap(WRONG_KEY, wrong); updateProgress(); const total = activeQuestions.length; const pct = total ? Math.round((correctCount/total)*100) : 0; const rb = document.getElementById('resultBox'); rb.style.display='block'; rb.innerHTML = `<h2 style="margin:0 0 8px;">Session result: ${correctCount} / ${total} (${pct}%)</h2><p><strong>Correct:</strong> ${correctCount}</p><p><strong>Wrong:</strong> ${wrongCount}</p><p><strong>Unanswered:</strong> ${unanswered}</p><p class="small">Der Lernfortschritt wurde aktualisiert. Jetzt werden automatisch nur die falschen Fragen angezeigt.</p>`; rb.scrollIntoView({behavior:'smooth', block:'start'}); if(wrongItems.length){ setTimeout(() => { activeQuestions = wrongItems; renderQuiz(wrongItems); }, 50); } }
+function showAnswersOnly(){
+  activeQuestions.forEach((item, idx) => {
+    const fb = document.getElementById(`fb_${idx}`);
+    if(!fb) return;
+
+    if (answersVisible) {
+      // HIDE
+      fb.style.display = 'none';
+    } else {
+      // SHOW
+      const correctText = item.correct.map(i => item.options[i]).join('; ');
+      fb.className = 'feedback correct';
+      fb.style.display = 'block';
+      fb.innerHTML = `✅ Correct answer: <strong>${correctText}</strong>`;
+    }
+  });
+
+  answersVisible = !answersVisible;
+
+  document.getElementById('toggleBtn').textContent =
+    answersVisible
+      ? '🙈 Hide answers'
+      : '👀 Show correct answers';
+}
+function newQuiz(){ saveSettings(); const mastered=loadMap(STORAGE_KEY), wrong=loadMap(WRONG_KEY); let pool = focusMode ? questionPool.filter(q=>wrong[q.id]) : questionPool.filter(q=>!mastered[q.id]); if(focusMode && pool.length===0){ focusMode=false; updateProgress(); pool = questionPool.filter(q=>!mastered[q.id]); } if(pool.length===0){ const rb=document.getElementById('resultBox'); rb.style.display='block'; rb.innerHTML='<h2 style="margin:0 0 8px;">🎉 Everything mastered</h2><p>All questions are currently mastered. Use Reset Progress to start over.</p>'; document.getElementById('quizForm').innerHTML=''; activeQuestions=[]; updateProgress(); return; } let requested = Number(document.getElementById('roundSizeSelect').value) || DEFAULT_QUESTION_COUNT; if(requested === 9999) requested = pool.length; activeQuestions = weightedSample(pool, Math.min(requested, pool.length)); renderQuiz(); updateProgress(); }
 function toggleFocus(){ focusMode=!focusMode; newQuiz(); }
 function resetProgress(){ localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(WRONG_KEY); focusMode=false; newQuiz(); updateProgress(); }
-updateProgress(); newQuiz();
+function exportProgress(){ const payload = {mastered: loadMap(STORAGE_KEY), wrong: loadMap(WRONG_KEY), settings: JSON.parse(localStorage.getItem(SETTINGS_KEY)||'{}')}; const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'bmc_quiz_progress.json'; a.click(); URL.revokeObjectURL(a.href); }
+document.getElementById('importFile').addEventListener('change', async (e) => { const f = e.target.files?.[0]; if(!f) return; try { const data = JSON.parse(await f.text()); if(data.mastered) saveMap(STORAGE_KEY, data.mastered); if(data.wrong) saveMap(WRONG_KEY, data.wrong); if(data.settings) localStorage.setItem(SETTINGS_KEY, JSON.stringify(data.settings)); loadSettings(); updateProgress(); newQuiz(); } catch(err) { alert('Import fehlgeschlagen: ungültige JSON-Datei.'); } });
+loadSettings(); updateProgress(); newQuiz();
 </script>
 </body>
 </html>
