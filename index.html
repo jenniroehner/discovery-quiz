@@ -43,6 +43,24 @@ label.opt:hover{background:#f9fafb}
 .grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
 .inline-stat{display:inline-flex;gap:8px;align-items:center;padding:8px 10px;background:#f9fafb;border:1px solid var(--border);border-radius:10px}
 .hidden{display:none!important}
+/* ========================= *//* ✅ FOOTER (APP STYLE) *//* ========================= */
+.footer-actions{  position:sticky;  bottom:0;  background:rgba(246,248,251,0.95);  backdrop-filter:blur(6px);  border-top:1px solid #e5e7eb;  padding:10px;  z-index:10;}
+/* Toolbar */
+.footer-actions .toolbar{  display:flex;  justify-content:space-around;  align-items:center;  gap:10px;}
+/* Buttons */
+.footer-actions button{  border-radius:12px;  padding:10px 14px;  font-weight:700;  border:1px solid #e5e7eb;  background:#fff;  cursor:pointer;  transition:all .2s ease;}
+/* Active Highlight */
+.footer-actions button.active{  background:#2563eb;  color:#fff;  transform:scale(1.05);  box-shadow:0 4px 12px rgba(37,99,235,0.3);}
+
+/* ========================= *//* ✅ MOBILE VERSION *//* ========================= */
+@media (max-width: 768px){  
+  /* Text verstecken */  
+  .btn-text{    display:none;  }  
+  /* Buttons wie App Icons */  
+  .footer-actions button{    width:50px;    height:50px;    padding:0;    font-size:22px;    display:flex;    align-items:center;    justify-content:center;  }}
+
+
+
 </style>
 </head>
 <body>
@@ -86,7 +104,29 @@ label.opt:hover{background:#f9fafb}
     </div>
   </section>
   <form id="quizForm"></form>
-  <div class="footer-actions"><div class="toolbar"><button type="button" onclick="submitAndScore()">✅ Submit &amp; Score</button><button type="button" class="secondary" onclick="newQuiz()">🔄 New round</button><button type="button" class="ghost" id="toggleBtn" onclick="showAnswersOnly()">👀 Show correct answers</button></div></div>
+  <div class="footer-actions">
+    <div class="toolbar">
+
+      <!-- Submit -->
+      <button type="button" class="btn-submit" onclick="submitAndScore()">
+        ✅ <span class="btn-text">Submit & Score</span>
+      </button>
+
+      <!-- New Round -->
+      <button type="button" class="btn-round secondary" onclick="newRound()">
+        🔄 <span class="btn-text">New Round</span>
+      </button>
+
+      <!-- Toggle Answers -->
+      <button id="toggleBtn" class="ghost" onclick="showAnswersOnly()">
+        👀 <span class="btn-text">Answers</span>
+      </button>
+
+
+    </div>
+  </div>
+
+
   <div id="resultBox" class="result-box"></div>
 </div>
 <script>
@@ -1947,13 +1987,11 @@ function submitAndScore(){
 function showAnswersOnly(){
   activeQuestions.forEach((item, idx) => {
     const fb = document.getElementById(`fb_${idx}`);
-    if(!fb) return;
+    if (!fb) return;
 
     if (answersVisible) {
-      // HIDE
       fb.style.display = 'none';
     } else {
-      // SHOW
       const correctText = item.correct.map(i => item.options[i]).join('; ');
       fb.className = 'feedback correct';
       fb.style.display = 'block';
@@ -1963,10 +2001,14 @@ function showAnswersOnly(){
 
   answersVisible = !answersVisible;
 
-  document.getElementById('toggleBtn').textContent =
-    answersVisible
-      ? '🙈 Hide answers'
-      : '👀 Show correct answers';
+  const btn = document.getElementById('toggleBtn');
+
+  btn.classList.toggle('active', answersVisible);
+
+  // Emoji wechseln
+  btn.innerHTML = answersVisible
+    ? '🙈 <span class="btn-text">Answers</span>'
+    : '👀 <span class="btn-text">Answers</span>';
 }
 function newQuiz(){ saveSettings(); const mastered=loadMap(STORAGE_KEY), wrong=loadMap(WRONG_KEY); let pool = focusMode ? questionPool.filter(q=>wrong[q.id]) : questionPool.filter(q=>!mastered[q.id]); if(focusMode && pool.length===0){ focusMode=false; updateProgress(); pool = questionPool.filter(q=>!mastered[q.id]); } if(pool.length===0){ const rb=document.getElementById('resultBox'); rb.style.display='block'; rb.innerHTML='<h2 style="margin:0 0 8px;">🎉 Everything mastered</h2><p>All questions are currently mastered. Use Reset Progress to start over.</p>'; document.getElementById('quizForm').innerHTML=''; activeQuestions=[]; updateProgress(); return; } let requested = Number(document.getElementById('roundSizeSelect').value) || DEFAULT_QUESTION_COUNT; if(requested === 9999) requested = pool.length; activeQuestions = weightedSample(pool, Math.min(requested, pool.length)); renderQuiz(); updateProgress(); }
 function toggleFocus(){ focusMode=!focusMode; newQuiz(); }
@@ -1974,6 +2016,17 @@ function resetProgress(){ localStorage.removeItem(STORAGE_KEY); localStorage.rem
 function exportProgress(){ const payload = {mastered: loadMap(STORAGE_KEY), wrong: loadMap(WRONG_KEY), settings: JSON.parse(localStorage.getItem(SETTINGS_KEY)||'{}')}; const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'bmc_quiz_progress.json'; a.click(); URL.revokeObjectURL(a.href); }
 document.getElementById('importFile').addEventListener('change', async (e) => { const f = e.target.files?.[0]; if(!f) return; try { const data = JSON.parse(await f.text()); if(data.mastered) saveMap(STORAGE_KEY, data.mastered); if(data.wrong) saveMap(WRONG_KEY, data.wrong); if(data.settings) localStorage.setItem(SETTINGS_KEY, JSON.stringify(data.settings)); loadSettings(); updateProgress(); newQuiz(); } catch(err) { alert('Import fehlgeschlagen: ungültige JSON-Datei.'); } });
 loadSettings(); updateProgress(); newQuiz();
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById('toggleBtn');
+
+  // Initial: immer "hidden state"
+  answersVisible = false;
+
+  btn.classList.remove('active');
+
+  // ✅ sauberes Initial Rendering erzwingen
+  btn.innerHTML = '👀 <span class="btn-text">Answers</span>';
+});
 </script>
 </body>
 </html>
