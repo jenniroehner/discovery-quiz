@@ -51,6 +51,14 @@ label.opt:hover{background:#f9fafb}
 .footer-actions button{  border-radius:12px;  padding:10px 14px;  font-weight:700;  border:1px solid #e5e7eb;  background:#fff;  cursor:pointer;  transition:all .2s ease;}
 /* Active Highlight */
 .footer-actions button.active{  background:#2563eb;  color:#fff;  transform:scale(1.05);  box-shadow:0 4px 12px rgba(37,99,235,0.3);}
+#toggleBtn .btn-icon::before {
+  content: "👀";
+  display: inline-block;
+}
+
+#toggleBtn.showing .btn-icon::before {
+  content: "🙈";
+}
 
 /* ========================= *//* ✅ MOBILE VERSION *//* ========================= */
 @media (max-width: 768px){  
@@ -58,6 +66,8 @@ label.opt:hover{background:#f9fafb}
   .btn-text{    display:none;  }  
   /* Buttons wie App Icons */  
   .footer-actions button{    width:50px;    height:50px;    padding:0;    font-size:22px;    display:flex;    align-items:center;    justify-content:center;  }}
+
+
 
 
 
@@ -119,9 +129,9 @@ label.opt:hover{background:#f9fafb}
 
       <!-- Toggle Answers -->
       <button id="toggleBtn" class="ghost" onclick="showAnswersOnly()">
-        👀 <span class="btn-text">Answers</span>
+        <span class="btn-icon"></span>
+        <span class="btn-text">Answers</span>
       </button>
-
 
     </div>
   </div>
@@ -1891,23 +1901,26 @@ function renderQuiz(questions = activeQuestions) {
     form.appendChild(sec);
   });
 
-  // ✅ WICHTIG: Toggle zurücksetzen bei neuer Runde
+  // ✅ ✅ TOGGLE RESET (WICHTIG!)
   answersVisible = false;
+
   const btn = document.getElementById('toggleBtn');
   if (btn) {
-    btn.textContent = '👀 Show correct answers';
+    btn.classList.remove('active');
+    btn.classList.remove('showing');
   }
 
-  // Optional: Ergebnisse verstecken
+  // ✅ Ergebnisbox zurücksetzen
   const resultBox = document.getElementById('resultBox');
   if (resultBox) {
     resultBox.style.display = 'none';
     resultBox.innerHTML = '';
   }
 
-  // Optional: nach oben scrollen
+  // ✅ Nach oben scrollen
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
 function getSelected(idx, multi){ if(multi) return Array.from(document.querySelectorAll(`input[name="q${idx}[]"]:checked`)).map(el=>Number(el.value)).sort((a,b)=>a-b); const s = document.querySelector(`input[name="q${idx}"]:checked`); return s ? [Number(s.value)] : []; }
 function sameSet(a,b){ if(a.length!==b.length) return false; for(let i=0;i<a.length;i++) if(a[i]!==b[i]) return false; return true; }
 function submitAndScore(){
@@ -2003,12 +2016,9 @@ function showAnswersOnly(){
 
   const btn = document.getElementById('toggleBtn');
 
+  // ✅ nur Klassen setzen!
   btn.classList.toggle('active', answersVisible);
-
-  // Emoji wechseln
-  btn.innerHTML = answersVisible
-    ? '🙈 <span class="btn-text">Answers</span>'
-    : '👀 <span class="btn-text">Answers</span>';
+  btn.classList.toggle('showing', answersVisible);
 }
 function newQuiz(){ saveSettings(); const mastered=loadMap(STORAGE_KEY), wrong=loadMap(WRONG_KEY); let pool = focusMode ? questionPool.filter(q=>wrong[q.id]) : questionPool.filter(q=>!mastered[q.id]); if(focusMode && pool.length===0){ focusMode=false; updateProgress(); pool = questionPool.filter(q=>!mastered[q.id]); } if(pool.length===0){ const rb=document.getElementById('resultBox'); rb.style.display='block'; rb.innerHTML='<h2 style="margin:0 0 8px;">🎉 Everything mastered</h2><p>All questions are currently mastered. Use Reset Progress to start over.</p>'; document.getElementById('quizForm').innerHTML=''; activeQuestions=[]; updateProgress(); return; } let requested = Number(document.getElementById('roundSizeSelect').value) || DEFAULT_QUESTION_COUNT; if(requested === 9999) requested = pool.length; activeQuestions = weightedSample(pool, Math.min(requested, pool.length)); renderQuiz(); updateProgress(); }
 function toggleFocus(){ focusMode=!focusMode; newQuiz(); }
@@ -2016,17 +2026,7 @@ function resetProgress(){ localStorage.removeItem(STORAGE_KEY); localStorage.rem
 function exportProgress(){ const payload = {mastered: loadMap(STORAGE_KEY), wrong: loadMap(WRONG_KEY), settings: JSON.parse(localStorage.getItem(SETTINGS_KEY)||'{}')}; const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'bmc_quiz_progress.json'; a.click(); URL.revokeObjectURL(a.href); }
 document.getElementById('importFile').addEventListener('change', async (e) => { const f = e.target.files?.[0]; if(!f) return; try { const data = JSON.parse(await f.text()); if(data.mastered) saveMap(STORAGE_KEY, data.mastered); if(data.wrong) saveMap(WRONG_KEY, data.wrong); if(data.settings) localStorage.setItem(SETTINGS_KEY, JSON.stringify(data.settings)); loadSettings(); updateProgress(); newQuiz(); } catch(err) { alert('Import fehlgeschlagen: ungültige JSON-Datei.'); } });
 loadSettings(); updateProgress(); newQuiz();
-document.addEventListener("DOMContentLoaded", () => {
-  const btn = document.getElementById('toggleBtn');
 
-  // Initial: immer "hidden state"
-  answersVisible = false;
-
-  btn.classList.remove('active');
-
-  // ✅ sauberes Initial Rendering erzwingen
-  btn.innerHTML = '👀 <span class="btn-text">Answers</span>';
-});
 </script>
 </body>
 </html>
